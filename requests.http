@@ -1,0 +1,23 @@
+POST http://localhost:3000/auth/signup
+content-type: application/json
+
+{
+    "username":"User12",
+    "email":"Email@email.com",
+    "password":"pass"
+}
+
+###
+
+POST http://localhost:3000/auth/login
+content-type: application/json
+
+{
+    "username":"User1",
+    "password":"pass"
+}
+
+###
+
+GET http://localhost:3000/protected
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
