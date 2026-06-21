@@ -19,5 +19,10 @@ content-type: application/json
 
 ###
 
+GET http://localhost:3000/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDc0NTY5LCJleHAiOjE3ODIxNjA5Njl9.5sj0vSWIUkA8UNuFfcDVquxU-rlbF6ifrBOwHjYnqqU
+
+###
+
 GET http://localhost:3000/protected
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ

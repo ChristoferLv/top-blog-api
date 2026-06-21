@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
 import { db } from "../db/pools.js";
-import { checkUsernameUsed } from '../db/queries.js';
 import { body, matchedData, validationResult } from "express-validator";
 import { prisma } from '../lib/prisma.js';
 import jwt from 'jsonwebtoken';
@@ -23,6 +22,10 @@ const validateNewUser = [
     }).withMessage("Password fields must match"),
 ];
 
+async function getMe(req, res) {
+    return res.json(req.user);
+}
+
 async function login(req, res) {
     const { username, password } = req.body;
 
@@ -32,11 +35,12 @@ async function login(req, res) {
         if (!user) {
             return res.json({ success: false, message: "Wrong credentials" });
         }
-        console.log(password, user.password)
+
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
             return res.json({ success: false, message: "Wrong credentials" });
         }
+        
         const payload = { id: user.id, username: user.username, email: user.email };
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
 
@@ -47,9 +51,6 @@ async function login(req, res) {
     } catch (err) {
         console.log(err)
     }
-
-
-
 }
 
 async function register(req, res) {
@@ -78,6 +79,7 @@ function logout(req, res, next) {
 }
 
 export {
+    getMe,
     login,
     register,
     logout,

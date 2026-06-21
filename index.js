@@ -4,6 +4,8 @@ import express, { json, urlencoded } from "express";
 import { passport } from "./authUtils.js";
 import authRouter from "./routes/authRoutes.js";
 import { prisma } from "./lib/prisma.js";
+import postsRouter from './routes/postsRoutes.js';
+import commentsRouter from './routes/commentsRoutes.js';
 const dir = import.meta.dirname;
 const assetsPath = join(dir, "public");
 
@@ -15,6 +17,8 @@ app.use(express.static(assetsPath));
 app.use(json());
 
 app.use("/auth", authRouter)
+app.use("/posts", postsRouter)
+app.use("/auth", commentsRouter)
 
 app.get("/protected", passport.authenticate('jwt', { session: false }), (req, res) => {
   return res.status(200).send({ text: "YAY! this is a protected Route", content: req.user });
