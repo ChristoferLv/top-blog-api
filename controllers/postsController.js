@@ -96,8 +96,9 @@ async function updatePostById(req, res) {
         return res.status(400).send({ success: false });
 
     const { title, content } = req.body;
+    console.log(title, content)
 
-    Object.assign(post, title, content);
+    Object.assign(post, {title:title, content:content});
 
     try {
         const result = await prisma.posts.update({
@@ -105,8 +106,8 @@ async function updatePostById(req, res) {
                 id: postId,
             },
             data: {
-                title: title,
-                content: content
+                title: post.title,
+                content: post.content
             }
         });
 

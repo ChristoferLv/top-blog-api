@@ -58,7 +58,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hb
 
 {
     "title":"Updated Post!",
-    "content":"Updated content2"
+    "content":"Updated content"
 }
 
 ###
@@ -68,12 +68,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hb
 
 ###
 
-POST http://localhost:3000/posts/1/comments
+POST http://localhost:3000/posts/3/comments
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
 
 {
-    "content":"First comment"
+    "content":"Second comment"
 }
 
 ###
@@ -81,3 +81,48 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hb
 GET http://localhost:3000/posts/1/comments
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+###Comments routes
+
+GET http://localhost:3000/comments
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+###
+
+GET http://localhost:3000/comments/2
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+###
+
+PUT  http://localhost:3000/comments/1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+{
+    "content":"Second comment edited!"
+}
+
+###
+
+DELETE  http://localhost:3000/comments/2
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -106,6 +106,46 @@ async function getCommentById(req, res) {
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  */
+async function updateCommentById(req, res) {
+    if (!req.user)
+        return res.status(401).send({ success: false, message: "User not logged in." });
+
+    const commentId = parseInt(req.params.id);
+
+    if (Number.isNaN(commentId))
+        return res.status(400).send({ success: false, message: "Invalid comment id." });
+
+    const comment = await prisma.comments.findUnique({ where: { id: commentId } });
+
+    if (comment.ownerId != req.user.id)
+        return res.status(400).send({ success: false });
+
+    const { content } = req.body;
+
+    Object.assign(comment, {content});
+    console.log(comment)
+
+    try {
+        const result = await prisma.comments.update({
+            where: {
+                id: commentId,
+            },
+            data: {
+                content: comment.content
+            }
+        });
+
+        return res.status(200).send({ success: true, content: result });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
 async function removeCommentById(req, res) {
     if (!req.user)
         return res.status(401).send({ success: false, message: "User not logged in." });
@@ -123,8 +163,6 @@ async function removeCommentById(req, res) {
             }
         });
 
-        console.log("on delete", result);
-
         return res.status(200).send({ success: true });
     } catch (error) {
         console.log(error);
@@ -139,5 +177,6 @@ export {
     getAllComments,
     getAllCommentsOfPost,
     getCommentById,
+    updateCommentById,
     removeCommentById
 }
