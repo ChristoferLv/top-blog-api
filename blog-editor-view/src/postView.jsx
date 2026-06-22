@@ -1,5 +1,9 @@
+import { use, useContext } from "react";
+import { AuthContext } from "./AuthContext";
+
 function PostView(){
-    return <h1>Hello</h1>
+    const { user } = useContext(AuthContext);
+    return <h1>Hello {user?.username}</h1>
 }
 
 export default PostView;

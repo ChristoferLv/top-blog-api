@@ -6,6 +6,7 @@ import authRouter from "./routes/authRoutes.js";
 import { prisma } from "./lib/prisma.js";
 import postsRouter from './routes/postsRoutes.js';
 import commentsRouter from './routes/commentsRoutes.js';
+import cors from 'cors'
 const dir = import.meta.dirname;
 const assetsPath = join(dir, "public");
 
@@ -15,6 +16,27 @@ app.set("views", join(dir, "views"));
 app.set("view engine", "ejs");
 app.use(express.static(assetsPath));
 app.use(json());
+
+const corsOptions = {
+  origin: 'http://localhost:5173', // Replace with your exact domain
+};
+
+app.use(cors(corsOptions));
+
+app.use((req, res, next) => {
+  try {
+    const timestamp = new Date().toISOString();
+    const method = req.method;
+    const url = req.url || req.originalUrl || 'unknown';
+    console.log(`📝 ${timestamp} - ${method} ${url}`);
+    console.log("   └req.body ->", req.body)
+    //console.log(req.headers.cookie)
+    next();
+  } catch (error) {
+    console.error("❌ Erro no middleware de log:", error);
+    next(); // Continue mesmo com erro no log
+  }
+});
 
 app.use("/auth", authRouter)
 app.use("/posts", postsRouter)
