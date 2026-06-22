@@ -10,13 +10,14 @@ async function makeComment(req, res) {
         return res.status(401).send({ success: false, message: "User not logged in." });
 
     const { content } = req.body;
+    const postId = parseInt(req.params.postId);
 
     try {
-        const result = await prisma.coments.create({
+        const result = await prisma.comments.create({
             data: {
                 content: content,
                 ownerId: req.user.id,
-                postId: req.params.postId
+                postId: postId
             }
         });
 
@@ -57,10 +58,12 @@ async function getAllCommentsOfPost(req, res) {
     if (!req.user)
         return res.status(401).send({ success: false, message: "User not logged in." });
 
+    const postId = parseInt(req.params.postId);
+
     try {
         const comments = await prisma.comments.findMany({
             where: {
-                postId: req.params.postId
+                postId: postId
             }
         });
 

@@ -20,9 +20,64 @@ content-type: application/json
 ###
 
 GET http://localhost:3000/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDc0NTY5LCJleHAiOjE3ODIxNjA5Njl9.5sj0vSWIUkA8UNuFfcDVquxU-rlbF6ifrBOwHjYnqqU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDg0MDQ5LCJleHAiOjE3ODIxNzA0NDl9.ClHiXaWPIZ_cqMloUtqlRem0QJTGPC83hkQbmSXXN0M
 
 ###
 
 GET http://localhost:3000/protected
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+###
+
+POST http://localhost:3000/posts
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+{
+    "title":"The second post",
+    "content":"Some content"
+}
+
+###
+
+GET http://localhost:3000/posts
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+###
+
+GET http://localhost:3000/posts/1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+###
+
+PUT  http://localhost:3000/posts/3
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+{
+    "title":"Updated Post!",
+    "content":"Updated content2"
+}
+
+###
+DELETE  http://localhost:3000/posts/2
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+###
+
+POST http://localhost:3000/posts/1/comments
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ
+
+{
+    "content":"First comment"
+}
+
+###
+
+GET http://localhost:3000/posts/1/comments
+content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMDYwMzc0LCJleHAiOjE3ODIxNDY3NzR9.Zc1wThpSHbMdHD0q6EL0_OXSWuno1wK5s00V0DWnNwQ

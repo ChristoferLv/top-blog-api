@@ -14,7 +14,7 @@ async function makePost(req, res) {
     try {
         const result = await prisma.posts.create({
             data: {
-                title:title,
+                title: title,
                 content: content,
                 ownerId: req.user.id
             }
@@ -81,6 +81,46 @@ async function getPostById(req, res) {
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  */
+async function updatePostById(req, res) {
+    if (!req.user)
+        return res.status(401).send({ success: false, message: "User not logged in." });
+
+    const postId = parseInt(req.params.id);
+
+    if (Number.isNaN(postId))
+        return res.status(400).send({ success: false, message: "Invalid post id." });
+
+    const post = await prisma.posts.findUnique({ where: { id: postId } });
+
+    if (post.ownerId != req.user.id)
+        return res.status(400).send({ success: false });
+
+    const { title, content } = req.body;
+
+    Object.assign(post, title, content);
+
+    try {
+        const result = await prisma.posts.update({
+            where: {
+                id: postId,
+            },
+            data: {
+                title: title,
+                content: content
+            }
+        });
+
+        return res.status(200).send({ success: true, content: result });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
 async function removePostById(req, res) {
     if (!req.user)
         return res.status(401).send({ success: false, message: "User not logged in." });
@@ -112,6 +152,7 @@ async function removePostById(req, res) {
 export {
     makePost,
     getAllPosts,
-    removePostById,
+    getPostById,
+    updatePostById,
     removePostById
 }
