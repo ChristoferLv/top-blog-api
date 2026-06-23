@@ -13,7 +13,7 @@ function ViewPost() {
             setPost(post.data);
         }
         getPost();
-        return () => setPost([]);
+        return () => setPost({});
     }, [])
 
     return (
@@ -21,7 +21,7 @@ function ViewPost() {
             <div className="editor-container">
                 <form className="post-form">
                     <input type="text" readOnly name="title" value={post?.title ?? ""} />
-                    <textarea name="content" defaultValue={post?.content??""} readOnly></textarea>
+                    <textarea name="content" value={post?.content??""} readOnly></textarea>
                 </form>
             </div>
         </>

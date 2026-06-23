@@ -17,7 +17,7 @@ function CreatePost() {
         e.preventDefault();
         const result = await makePost(postData);
         if (result && result.success) {
-            navigate("/posts/my", { replace: true });
+            navigate("/posts", { replace: true });
         } else {
             alert("Something went wrong.")
         }
@@ -30,7 +30,7 @@ function CreatePost() {
                 <form onSubmit={handleSubmit} className="post-form">
                     <button type="submit">Publish</button>
                     <input type="text" onChange={handlePostData} name="title" placeholder="Title" value={postData.title} />
-                    <textarea name="content" onChange={handlePostData} id="" placeholder="Your creation..."></textarea>
+                    <textarea name="content" onChange={handlePostData} value={postData.content} placeholder="Your creation..."></textarea>
                 </form>
             </div>
         </>

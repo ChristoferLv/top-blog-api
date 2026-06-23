@@ -7,6 +7,7 @@ import { AuthProvider } from './AuthProvider.jsx'
 import Home from './HomePage.jsx'
 import CreatePost from './CreatePostPage.jsx'
 import ViewPost from './ViewPostPage.jsx'
+import EditPost from './EditPostPage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -14,9 +15,10 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "login", element: <LoginPage /> },
-      { path: "posts/my", element: <Home /> },
+      { path: "posts", element: <Home /> },
       { path: "posts/new", element: <CreatePost /> },
       { path: "posts/:postId", element: <ViewPost /> },
+      { path: "posts/edit/:postId", element: <EditPost /> },
     ]
   },
 ]);

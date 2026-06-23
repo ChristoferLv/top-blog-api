@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <header>
-        <a href="/"><p>The Gutenberg Blog</p></a>
+        <a href="/posts"><p>The Gutenberg Blog</p></a>
 
         <Link to="/posts/my" >
           test</Link>

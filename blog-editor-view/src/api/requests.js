@@ -50,7 +50,25 @@ async function getPostById(postId) {
             },
         });
         const data = await response.json();
-        console.log(data)
+        return data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function updatePost(postId, newData) {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(BASE_URL + '/posts/' + postId, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify(newData)
+        });
+        const data = await response.json();
         return data;
     } catch (error) {
         console.log(error)
@@ -61,5 +79,6 @@ async function getPostById(postId) {
 export {
     getMyPosts,
     makePost,
-    getPostById
+    getPostById,
+    updatePost
 }
