@@ -1,9 +1,11 @@
 import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { getMyPosts, getPostById, makePost, updatePost } from "./api/requests";
+import { deletePost, getMyPosts, getPostById, makePost, updatePost } from "./api/requests";
 import { useNavigate, useParams } from "react-router";
+import ConfirmationDialog from "./components/ConfirmationDialog";
 
 function EditPost() {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [postData, setPostData] = useState({ title: "", content: "" });
     const navigate = useNavigate();
     const { postId } = useParams();
@@ -32,18 +34,48 @@ function EditPost() {
         }
         getPost();
         return () => setPostData({});
-    }, [])
+    }, []);
+
+
+    const handleDeleteClick = () => {
+        setIsDialogOpen(true);
+    };
+
+    const handleConfirmAction = async () => {
+        const result = await deletePost(postId);
+        if (result && result.success) {
+            setIsDialogOpen(false);
+            navigate("/posts", { replace: true });
+        }
+    };
+
+    const handleCancelAction = () => {
+        setIsDialogOpen(false);
+    };
 
 
     return (
         <>
             <div className="editor-container">
-                <form onSubmit={handleSubmit} className="post-form">
-                    <button type="submit">Save</button>
+                <div className="actions">
+                    <button className="delete-button" type="submit" onClick={handleDeleteClick}>Delete</button>
+                    <button className="save-button" type="submit" form="post-form">Save</button>
+                </div>
+                <form id="post-form" onSubmit={handleSubmit} className="post-form">
                     <input type="text" onChange={handlePostData} name="title" value={postData.title || ""} />
                     <textarea name="content" onChange={handlePostData} value={postData.content || ""}></textarea>
                 </form>
             </div>
+
+
+
+            <ConfirmationDialog
+                isOpen={isDialogOpen}
+                title="Delete post permanently?"
+                message="Are you absolutely sure you want to delete your this post? This action can't be reverted."
+                onConfirm={handleConfirmAction}
+                onCancel={handleCancelAction}
+            />
         </>
     )
 }

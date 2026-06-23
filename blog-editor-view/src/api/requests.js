@@ -75,10 +75,29 @@ async function updatePost(postId, newData) {
     }
 }
 
+async function deletePost(postId) {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(BASE_URL + '/posts/' + postId, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 export {
     getMyPosts,
     makePost,
     getPostById,
-    updatePost
+    updatePost,
+    deletePost
 }
