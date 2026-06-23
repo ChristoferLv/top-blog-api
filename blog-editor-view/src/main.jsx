@@ -2,9 +2,10 @@ import { createContext, StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import App from './App.jsx'
-import PostView from './postView.jsx'
 import LoginPage from './login.jsx'
 import { AuthProvider } from './AuthProvider.jsx'
+import Home from './HomePage.jsx'
+import CreatePost from './CreatePostPage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -12,8 +13,9 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "login", element: <LoginPage /> },
-      { path: "posts/my", element: <PostView /> },
-      { path: "posts/:id", element: <PostView /> },
+      { path: "posts/my", element: <Home /> },
+      { path: "posts/new", element: <CreatePost /> },
+      { path: "posts/:id", element: <h1>a</h1> },
     ]
   },
 ]);

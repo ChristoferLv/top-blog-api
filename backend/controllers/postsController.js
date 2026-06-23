@@ -89,7 +89,8 @@ async function getPostsByUser(req, res) {
         const result = await prisma.posts.findMany({
             where: {
                 ownerId: req.user.id
-            }
+            },
+            orderBy:{posted_at:'desc'}
         });
 
         return res.status(200).send({ success: true, posts: result });

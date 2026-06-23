@@ -13,7 +13,7 @@ function App() {
       <header>
         <a href="/"><p>The Gutenberg Blog</p></a>
 
-        <Link to="/post/1" >
+        <Link to="/posts/my" >
           test</Link>
       </header>
       <Outlet />

@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: #f2f3f4;
+    background-color: #fafcfe;
 }
 
 #root {
@@ -9,7 +9,7 @@ body {
     height: 100dvh;
 }
 
-.link-plain{
+.link-plain {
     text-decoration: none;
 }
 
@@ -107,4 +107,103 @@ h1 {
     background-color: rgb(255, 228, 56);
     color: black;
     padding: 10px;
+}
+
+.posts-container {
+    display: grid;
+    grid-template-columns: 38vw;
+    align-self: center;
+   padding-bottom: 20px;
+   margin-bottom: 100px;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+}
+
+.post p {
+    margin: 0;
+}
+
+.post-title {
+    margin-bottom: 10px !important;
+}
+
+.post-title {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+.posts-separator {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+/* .post:last-of-type .posts-separator{
+    display: none;
+} */
+
+.multi-line-truncate {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Change this to your preferred number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    /* Hides the remaining text lines */
+}
+
+.editor-container {
+    display: grid;
+    grid-template-columns: 42vw;
+    align-self: center;
+    margin-top: 35px;
+}
+
+.editor-container button{
+    margin-left: 100%;
+}
+
+.post-form {}
+
+.post-form input {
+    box-shadow: none;
+    border: none;
+    border-radius: none;
+    background-color: inherit;
+    outline: none;
+    font-size: 45px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    padding-left: 0;
+}
+
+.post-form textarea {
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    border: 1px solid #999999;
+    width: 100%;
+    margin: 5px 0;
+    padding: 3px;
+    box-sizing: border-box;
+    field-sizing: content;
+    resize: vertical;
+    box-shadow: none;
+    border: none;
+    border-radius: none;
+    background-color: inherit;
+    outline: none;
+    resize: none;
+}
+
+.post-form input::placeholder {
+    color: #acacac;
 }

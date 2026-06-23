@@ -2,7 +2,7 @@ import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { getMyPosts } from "./api/requests";
 
-function PostView() {
+function Home() {
     const { user } = useContext(AuthContext);
     const [postsList, setPostsList] = useState([]);
 
@@ -15,21 +15,23 @@ function PostView() {
             getPosts();
         return () => setPostsList([]);
     }, [user])
-    console.log("render")
 
     return (
         <>
             <p>{user?.username}</p>
-            {postsList.map((post) => {
-                return <div key={post.id} className="postCard">
-                    <p>{post.id}</p>
-                    <p>{post.title}</p>
-                    <p>{post.content}</p>
-                </div>
-            })}
+            <div className="posts-container">
+                {postsList.map((post) => {
+                    return <div key={post.id} className="post">
+                        <p>{post.id}</p>
+                        <p className="post-title">{post.title}</p>
+                        <p className="multi-line-truncate">{post.content}</p>
+                        <hr className="posts-separator" />
+                    </div>
+                })}
+            </div>
 
         </>
     )
 }
 
-export default PostView;
+export default Home;
