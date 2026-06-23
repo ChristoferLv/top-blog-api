@@ -12,7 +12,8 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "login", element: <LoginPage /> },
-      { path: "post/:id", element: <PostView /> },
+      { path: "posts/my", element: <PostView /> },
+      { path: "posts/:id", element: <PostView /> },
     ]
   },
 ]);

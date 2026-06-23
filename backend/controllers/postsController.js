@@ -81,6 +81,28 @@ async function getPostById(req, res) {
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  */
+async function getPostsByUser(req, res) {
+    if (!req.user)
+        return res.status(401).send({ success: false, message: "User not logged in." });
+
+    try {
+        const result = await prisma.posts.findMany({
+            where: {
+                ownerId: req.user.id
+            }
+        });
+
+        return res.status(200).send({ success: true, posts: result });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
 async function updatePostById(req, res) {
     if (!req.user)
         return res.status(401).send({ success: false, message: "User not logged in." });
@@ -98,7 +120,7 @@ async function updatePostById(req, res) {
     const { title, content } = req.body;
     console.log(title, content)
 
-    Object.assign(post, {title:title, content:content});
+    Object.assign(post, { title: title, content: content });
 
     try {
         const result = await prisma.posts.update({
@@ -155,5 +177,6 @@ export {
     getAllPosts,
     getPostById,
     updatePostById,
-    removePostById
+    removePostById,
+    getPostsByUser
 }

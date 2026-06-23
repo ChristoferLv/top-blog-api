@@ -1,9 +1,35 @@
-import { use, useContext } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
+import { getMyPosts } from "./api/requests";
 
-function PostView(){
+function PostView() {
     const { user } = useContext(AuthContext);
-    return <h1>Hello {user?.username}</h1>
+    const [postsList, setPostsList] = useState([]);
+
+    useEffect(() => {
+        async function getPosts() {
+            const posts = await getMyPosts(user.token);
+            setPostsList(posts);
+        }
+        if (user)
+            getPosts();
+        return () => setPostsList([]);
+    }, [user])
+    console.log("render")
+
+    return (
+        <>
+            <p>{user?.username}</p>
+            {postsList.map((post) => {
+                return <div key={post.id} className="postCard">
+                    <p>{post.id}</p>
+                    <p>{post.title}</p>
+                    <p>{post.content}</p>
+                </div>
+            })}
+
+        </>
+    )
 }
 
 export default PostView;

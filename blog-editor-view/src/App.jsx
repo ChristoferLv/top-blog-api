@@ -10,12 +10,13 @@ import { Link } from "react-router";
 function App() {
   return (
     <>
-        <header>
-          <p>Glad to Shop</p>
-          <Link to="/post/1" >
+      <header>
+        <a href="/"><p>The Gutenberg Blog</p></a>
+
+        <Link to="/post/1" >
           test</Link>
-        </header>
-        <Outlet />
+      </header>
+      <Outlet />
     </>
   )
 }

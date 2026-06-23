@@ -6,18 +6,23 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const storagedUser = localStorage.getItem('user');
     const storagedToken = localStorage.getItem('token');
-    if (storagedUser) {
-      setUser(JSON.parse(storagedUser));
-    } else if (storagedToken) {
-      fetch('http://localhost:3000/auth/me', {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': storagedToken
-        }
-      }).then((response) => response.json()).then((data)=> setUser(data));
-     
+    if (!user) {
+      if (storagedUser) {
+        setUser(JSON.parse(storagedUser));
+      } else if (storagedToken) {
+        fetch('http://localhost:3000/auth/me', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': storagedToken
+          }
+        }).then((response) => response.json()).then((data) => {
+          const user = { token: storagedToken, ...data };
+          localStorage.setItem("user", JSON.stringify(user));
+          setUser(user)
+        });
+      }
     }
   }, []);
 
