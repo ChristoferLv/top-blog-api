@@ -70,7 +70,7 @@ async function getPostById(req, res) {
             }
         });
 
-        return res.status(200).send({ success: true, post: result });
+        return res.status(200).send({ success: true, data: result });
     } catch (error) {
         console.log(error);
     }
@@ -93,7 +93,7 @@ async function getPostsByUser(req, res) {
             orderBy:{posted_at:'desc'}
         });
 
-        return res.status(200).send({ success: true, posts: result });
+        return res.status(200).send({ success: true, data: result });
     } catch (error) {
         console.log(error);
     }

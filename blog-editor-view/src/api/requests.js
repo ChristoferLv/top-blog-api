@@ -13,7 +13,7 @@ async function getMyPosts() {
             }
         });
         const data = await response.json();
-        return data.posts;
+        return data;
     } catch (error) {
         console.log(error)
     }
@@ -38,8 +38,28 @@ async function makePost(postData) {
     }
 }
 
+async function getPostById(postId) {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(BASE_URL + '/posts/' + postId, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+        });
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 export {
     getMyPosts,
-    makePost
+    makePost,
+    getPostById
 }

@@ -1,6 +1,7 @@
 import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { getMyPosts } from "./api/requests";
+import { Link } from "react-router";
 
 function Home() {
     const { user } = useContext(AuthContext);
@@ -9,7 +10,7 @@ function Home() {
     useEffect(() => {
         async function getPosts() {
             const posts = await getMyPosts(user.token);
-            setPostsList(posts);
+            setPostsList(posts.data);
         }
         if (user)
             getPosts();
@@ -21,14 +22,16 @@ function Home() {
             <p>{user?.username}</p>
             <div className="posts-container">
                 {postsList.map((post) => {
-                    return <div key={post.id} className="post">
-                        <p>{post.id}</p>
-                        <p className="post-title">{post.title}</p>
-                        <p className="multi-line-truncate">{post.content}</p>
+                    return (<div key={post.id} className="post">
+                        <Link to={`/posts/${post.id}`}>
+                            <p>{post.id}</p>
+                            <p className="post-title">{post.title}</p>
+                            <p className="multi-line-truncate">{post.content}</p>
+                        </Link>
                         <hr className="posts-separator" />
-                    </div>
+                    </div>)
                 })}
-            </div>
+            </div >
 
         </>
     )
