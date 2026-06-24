@@ -116,6 +116,25 @@ async function getCommentsOfPost(postId) {
     }
 }
 
+async function makeComment(postId, commentContent) {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(BASE_URL + '/posts/' + postId + "/comments", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify({ content: commentContent })
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 export {
     getMyPosts,
@@ -124,5 +143,6 @@ export {
     updatePost,
     deletePost,
     logOut,
-    getCommentsOfPost
+    getCommentsOfPost,
+    makeComment
 }

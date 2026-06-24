@@ -87,7 +87,7 @@ function EditPost() {
                             comments.map((comment) => {
                                 return (<div key={comment.id} className="comment">
                                     <p className="post-author"><strong>{comment.owner.username}</strong></p>
-                                    <p className="published-at">{comment.posted_at}</p>
+                                    <p className="published-at">{new Date(comment.posted_at).toLocaleDateString()} - {new Date(comment.posted_at).toLocaleTimeString()}</p>
                                     <p className="comment-content">{comment.content}</p>
                                     <hr className="posts-separator" />
                                 </div>);

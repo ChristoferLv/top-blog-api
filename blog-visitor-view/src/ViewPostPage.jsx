@@ -1,11 +1,12 @@
 import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { getCommentsOfPost, getPostById } from "./api/requests";
+import { getCommentsOfPost, getPostById, makeComment } from "./api/requests";
 import { useNavigate, useParams } from "react-router";
 
 function ViewPost() {
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState(null);
+    const [myComment, setMyComment] = useState("");
     const { postId } = useParams();
     const navigate = useNavigate();
 
@@ -26,6 +27,21 @@ function ViewPost() {
     }, []);
 
 
+    function handleCommentChange(e) {
+        setMyComment(e.target.value);
+    }
+
+    async function sendComment(e) {
+        e.preventDefault();
+        if (myComment == "") return;
+        const result = await makeComment(postId, myComment);
+        if (result && result.success) {
+            setMyComment("");
+            const comments = await getCommentsOfPost(postId);
+            setComments(comments.data);
+        }
+    }
+
     if (!post) return (<><div className="editor-container"><p>Loading...</p></div></>);
 
     return (
@@ -42,6 +58,15 @@ function ViewPost() {
                 <hr className="posts-separator" />
                 <div className="comments">
                     <p className="comments-head">Comments</p>
+                    <div className="make-comment">
+                        <form>
+                            <label htmlFor="comment">Make your comment</label>
+                            <input id="comment" type="text" placeholder={"What you have to say?"} onChange={handleCommentChange} value={myComment} />
+                            <div>
+                                <button className="send-comment" onClick={sendComment}>Send</button>
+                            </div>
+                        </form>
+                    </div>
                     {!comments ? (<p>Loading comments...</p>) : (
                         comments.length == 0 ? (<p>No comments yet.</p>) : (
                             comments.map((comment) => {

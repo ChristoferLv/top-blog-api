@@ -223,11 +223,22 @@ h1 {
     justify-self: flex-end;
 }
 
+.make-comment form div {
+    display: flex;
+    justify-content: end;
+}
+
+.make-comment form input {
+    margin-bottom: 10px;
+}
+
+.send-comment,
 .publish-button,
 .save-button {
     background-color: #1a8917;
 }
 
+.send-comment,
 .publish-button:hover,
 .save-button:hover {
     background-color: #0f730c;

@@ -65,7 +65,8 @@ async function getAllCommentsOfPost(req, res) {
             where: {
                 postId: postId
             },
-            include: { owner: { select: { username:true } } }
+            include: { owner: { select: { username:true } } },
+            orderBy:{posted_at:'desc'}
         });
 
         return res.status(200).send({ success: true, data: comments });
