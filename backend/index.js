@@ -18,7 +18,7 @@ app.use(express.static(assetsPath));
 app.use(json());
 
 const corsOptions = {
-  origin: 'http://localhost:5173', // Replace with your exact domain
+  origin: ['http://localhost:5173', 'http://localhost:5174']
 };
 
 app.use(cors(corsOptions));

@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       <header>
-        <a href="/"><p>The Gutenberg Blog</p></a>
+        <Link to={"/"}><p>The Gutenberg Blog</p></Link>
         {user && <div className="header-actions">
           <button onClick={() => navigate("/new-post")} className="header-action-item">
             New Post
