@@ -21,7 +21,7 @@ function EditPost() {
         e.preventDefault();
         const result = await updatePost(postId, postData);
         if (result && result.success) {
-            navigate("/posts", { replace: true });
+            navigate("/", { replace: true });
         } else {
             alert("Something went wrong.")
         }
@@ -45,7 +45,7 @@ function EditPost() {
         const result = await deletePost(postId);
         if (result && result.success) {
             setIsDialogOpen(false);
-            navigate("/posts", { replace: true });
+            navigate("/", { replace: true });
         }
     };
 
@@ -61,6 +61,8 @@ function EditPost() {
                     <button className="delete-button" type="submit" onClick={handleDeleteClick}>Delete</button>
                     <button className="save-button" type="submit" form="post-form">Save</button>
                 </div>
+                <p className="published-at">Posted on: <strong>{new Date(postData.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(postData.posted_at).toLocaleTimeString()}</strong></p>
+
                 <form id="post-form" onSubmit={handleSubmit} className="post-form">
                     <input type="text" onChange={handlePostData} name="title" value={postData.title || ""} />
                     <textarea name="content" onChange={handlePostData} value={postData.content || ""}></textarea>

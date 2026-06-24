@@ -17,7 +17,7 @@ function CreatePost() {
         e.preventDefault();
         const result = await makePost(postData);
         if (result && result.success) {
-            navigate("/posts", { replace: true });
+            navigate("/", { replace: true });
         } else {
             alert("Something went wrong.")
         }
@@ -27,8 +27,8 @@ function CreatePost() {
     return (
         <>
             <div className="editor-container">
-                <form onSubmit={handleSubmit} className="post-form">
-                    <button type="submit">Publish</button>
+                <button className="publish-button" form="post-form" type="submit">Publish</button>
+                <form id="post-form" onSubmit={handleSubmit} className="post-form">
                     <input type="text" onChange={handlePostData} name="title" placeholder="Title" value={postData.title} />
                     <textarea name="content" onChange={handlePostData} value={postData.content} placeholder="Your creation..."></textarea>
                 </form>

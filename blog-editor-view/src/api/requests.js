@@ -93,11 +93,18 @@ async function deletePost(postId) {
     }
 }
 
+async function logOut(){
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    window.location.pathname = "/login";
+}
+
 
 export {
     getMyPosts,
     makePost,
     getPostById,
     updatePost,
-    deletePost
+    deletePost,
+    logOut
 }

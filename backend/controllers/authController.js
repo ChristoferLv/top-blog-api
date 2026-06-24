@@ -23,7 +23,9 @@ const validateNewUser = [
 ];
 
 async function getMe(req, res) {
-    return res.json(req.user);
+    if (req.user)
+        return res.json({ success: true, data: req.user });
+    return res.status(400).json({ success: false, data: undefined });
 }
 
 async function login(req, res) {
@@ -40,7 +42,7 @@ async function login(req, res) {
         if (!match) {
             return res.json({ success: false, message: "Wrong credentials" });
         }
-        
+
         const payload = { id: user.id, username: user.username, email: user.email };
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
 

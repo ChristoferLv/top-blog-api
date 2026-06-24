@@ -107,6 +107,7 @@ h1 {
     background-color: rgb(255, 228, 56);
     color: black;
     padding: 10px;
+    cursor: pointer;
 }
 
 .posts-container {
@@ -114,7 +115,7 @@ h1 {
     grid-template-columns: 38vw;
     align-self: center;
     padding-bottom: 20px;
-    margin-bottom: 100px;
+    margin-top: 20px;
 }
 
 .post {
@@ -128,13 +129,14 @@ h1 {
 
 .post-title {
     margin-bottom: 10px !important;
-}
-
-.post-title {
     font-size: 30px;
     font-weight: bold;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
 
+.published-at{
+    margin-top: 5px !important;
+    font-size: smaller;
 }
 
 .post a {
@@ -207,10 +209,16 @@ h1 {
     background-color: #891717;
 }
 
+.publish-button{
+    justify-self: flex-end;
+}
+
+.publish-button,
 .save-button {
     background-color: #1a8917;
 }
 
+.publish-button:hover,
 .save-button:hover {
     background-color: #0f730c;
 }

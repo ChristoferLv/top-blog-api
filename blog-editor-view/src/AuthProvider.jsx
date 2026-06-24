@@ -1,5 +1,6 @@
 import { use, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -22,6 +23,9 @@ export function AuthProvider({ children }) {
           localStorage.setItem("user", JSON.stringify(user));
           setUser(user)
         });
+      } else {
+        if (window.location.pathname != "/login")
+          window.location.pathname = "/login";
       }
     }
   }, []);

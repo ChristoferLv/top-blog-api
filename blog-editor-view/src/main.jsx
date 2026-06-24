@@ -1,6 +1,6 @@
 import { createContext, StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
 import App from './App.jsx'
 import LoginPage from './login.jsx'
 import { AuthProvider } from './AuthProvider.jsx'
@@ -14,11 +14,13 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      { path: "login", element: <LoginPage /> },
-      { path: "posts", element: <Home /> },
-      { path: "posts/new", element: <CreatePost /> },
-      { path: "posts/:postId", element: <ViewPost /> },
-      { path: "posts/edit/:postId", element: <EditPost /> },
+      { path: "/login", element: <LoginPage /> },
+      { path: "/", element: <Home /> },
+      { path: "/new-post", element: <CreatePost /> },
+      { path: "/view/:postId", element: <ViewPost /> },
+      { path: "/edit/:postId", element: <EditPost /> },
+
+      { path: "*", element: <Navigate to="/" replace /> } 
     ]
   },
 ]);

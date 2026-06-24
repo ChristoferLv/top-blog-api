@@ -1,11 +1,12 @@
 import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { getMyPosts } from "./api/requests";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 function Home() {
     const { user } = useContext(AuthContext);
     const [postsList, setPostsList] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function getPosts() {
@@ -15,18 +16,18 @@ function Home() {
         if (user)
             getPosts();
         return () => setPostsList([]);
-    }, [user])
+    }, [user]);
 
     return (
         <>
-            <p>{user?.username}</p>
             <div className="posts-container">
                 {postsList.map((post) => {
                     return (<div key={post.id} className="post">
-                        <Link to={`/posts/${post.id}`}>
+                        <Link to={`/view/${post.id}`}>
                             <p>{post.id}</p>
                             <p className="post-title">{post.title}</p>
                             <p className="multi-line-truncate">{post.content}</p>
+                            <p className="published-at">Posted on: <strong>{new Date(post.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(post.posted_at).toLocaleTimeString()}</strong></p>
                         </Link>
                         <hr className="posts-separator" />
                     </div>)
