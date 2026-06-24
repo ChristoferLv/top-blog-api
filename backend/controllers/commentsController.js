@@ -64,10 +64,11 @@ async function getAllCommentsOfPost(req, res) {
         const comments = await prisma.comments.findMany({
             where: {
                 postId: postId
-            }
+            },
+            include: { owner: { select: { username:true } } }
         });
 
-        return res.status(200).send({ success: true, comments: comments });
+        return res.status(200).send({ success: true, data: comments });
     } catch (error) {
         console.log(error);
     }
@@ -122,7 +123,7 @@ async function updateCommentById(req, res) {
 
     const { content } = req.body;
 
-    Object.assign(comment, {content});
+    Object.assign(comment, { content });
     console.log(comment)
 
     try {

@@ -1,12 +1,13 @@
 import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { deletePost, getMyPosts, getPostById, makePost, updatePost } from "./api/requests";
+import { deletePost, getCommentsOfPost, getMyPosts, getPostById, makePost, updatePost } from "./api/requests";
 import { useNavigate, useParams } from "react-router";
 import ConfirmationDialog from "./components/ConfirmationDialog";
 
 function EditPost() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [postData, setPostData] = useState(null);
+    const [comments, setComments] = useState(null);
     const navigate = useNavigate();
     const { postId } = useParams();
 
@@ -32,8 +33,15 @@ function EditPost() {
             const post = await getPostById(postId);
             setPostData(post.data);
         }
+        async function getComments() {
+            const comments = await getCommentsOfPost(postId);
+            setComments(comments.data);
+        }
+
         getPost();
-        return () => setPostData(null);
+        getComments();
+        return () => { setPostData(null); setComments(null); };
+
     }, []);
 
 
@@ -53,7 +61,7 @@ function EditPost() {
         setIsDialogOpen(false);
     };
 
-    if(!postData) return (<><div className="editor-container"><p>Loading...</p></div></>);
+    if (!postData) return (<><div className="editor-container"><p>Loading...</p></div></>);
 
 
     return (
@@ -71,6 +79,23 @@ function EditPost() {
                     <input type="text" onChange={handlePostData} name="title" value={postData.title || ""} />
                     <textarea name="content" onChange={handlePostData} value={postData.content || ""}></textarea>
                 </form>
+                <hr className="posts-separator" />
+                <div className="comments">
+                    <p className="comments-head">Comments</p>
+                    {!comments ? (<p>Loading comments...</p>) : (
+                        comments.length == 0 ? (<p>No comments yet.</p>) : (
+                            comments.map((comment) => {
+                                return (<div key={comment.id} className="comment">
+                                    <p className="post-author"><strong>{comment.owner.username}</strong></p>
+                                    <p className="published-at">{comment.posted_at}</p>
+                                    <p className="comment-content">{comment.content}</p>
+                                    <hr className="posts-separator" />
+                                </div>);
+                            })
+                        )
+                    )}
+
+                </div>
             </div>
 
 

@@ -133,7 +133,7 @@ h1 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.summary{
+.summary {
     color: #383838;
     font-size: large;
 }
@@ -264,6 +264,27 @@ h1 {
 
 .post-form input::placeholder {
     color: #acacac;
+}
+
+.comments-head {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.comment {
+    margin-left: 5px;
+}
+
+.comment-content {
+    margin-top: 3px;
 }
 
 

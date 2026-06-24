@@ -78,12 +78,12 @@ Authorization: {{token}}
 
 ###
 
-POST http://localhost:3000/posts/3/comments
+POST http://localhost:3000/posts/9/comments
 content-type: application/json
 Authorization: {{token}}
 
 {
-    "content":"Second comment"
+    "content":"First!"
 }
 
 ###

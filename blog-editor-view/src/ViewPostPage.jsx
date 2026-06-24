@@ -1,10 +1,11 @@
 import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { getPostById } from "./api/requests";
+import { getCommentsOfPost, getPostById } from "./api/requests";
 import { useNavigate, useParams } from "react-router";
 
 function ViewPost() {
     const [post, setPost] = useState(null);
+    const [comments, setComments] = useState(null);
     const { postId } = useParams();
     const navigate = useNavigate();
 
@@ -13,15 +14,22 @@ function ViewPost() {
             const post = await getPostById(postId);
             setPost(post.data);
         }
+
+        async function getComments() {
+            const comments = await getCommentsOfPost(postId);
+            setComments(comments.data);
+        }
+
         getPost();
-        return () => setPost(null);
+        getComments();
+        return () => { setPost(null); setComments(null); };
     }, []);
 
     function goToEdit() {
         navigate("/edit/" + postId);
     }
 
-    if(!post) return (<><div className="editor-container"><p>Loading...</p></div></>);
+    if (!post) return (<><div className="editor-container"><p>Loading...</p></div></>);
 
     return (
         <>
@@ -35,7 +43,25 @@ function ViewPost() {
                     <input type="text" readOnly name="title" value={post.title} />
                     <textarea name="content" value={post.content} readOnly></textarea>
                 </form>
+                <hr className="posts-separator" />
+                <div className="comments">
+                    <p className="comments-head">Comments</p>
+                    {!comments ? (<p>Loading comments...</p>) : (
+                        comments.length == 0 ? (<p>No comments yet.</p>) : (
+                            comments.map((comment) => {
+                                return (<div key={comment.id} className="comment">
+                                    <p className="post-author"><strong>{comment.owner.username}</strong></p>
+                                    <p className="published-at">{comment.posted_at}</p>
+                                    <p className="comment-content">{comment.content}</p>
+                                    <hr className="posts-separator" />
+                                </div>);
+                            })
+                        )
+                    )}
+
+                </div>
             </div>
+
         </>
     )
 }
