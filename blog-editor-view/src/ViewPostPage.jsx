@@ -4,7 +4,7 @@ import { getPostById } from "./api/requests";
 import { useNavigate, useParams } from "react-router";
 
 function ViewPost() {
-    const [post, setPost] = useState({});
+    const [post, setPost] = useState(null);
     const { postId } = useParams();
     const navigate = useNavigate();
 
@@ -14,22 +14,26 @@ function ViewPost() {
             setPost(post.data);
         }
         getPost();
-        return () => setPost({});
+        return () => setPost(null);
     }, []);
 
     function goToEdit() {
         navigate("/edit/" + postId);
     }
 
+    if(!post) return (<><div className="editor-container"><p>Loading...</p></div></>);
+
     return (
         <>
             <div className="editor-container">
-
                 <button className="edit-button" onClick={goToEdit}>Edit</button>
-                <p className="published-at">Posted on: <strong>{new Date(post.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(post.posted_at).toLocaleTimeString()}</strong></p>
+                <div className="post-info">
+                    <p className="post-author">By: <strong>{post.owner.username}</strong></p>
+                    <p className="published-at">Posted on: <strong>{new Date(post.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(post.posted_at).toLocaleTimeString()}</strong></p>
+                </div>
                 <form className="post-form">
-                    <input type="text" readOnly name="title" value={post?.title ?? ""} />
-                    <textarea name="content" value={post?.content ?? ""} readOnly></textarea>
+                    <input type="text" readOnly name="title" value={post.title} />
+                    <textarea name="content" value={post.content} readOnly></textarea>
                 </form>
             </div>
         </>

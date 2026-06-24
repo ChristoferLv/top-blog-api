@@ -39,7 +39,8 @@ async function getAllPosts(req, res) {
         const posts = await prisma.posts.findMany({
             where: {
                 ownerId: req.user.id
-            }
+            },
+            include: { owner: { select: { username: true } } }
         });
 
         return res.status(200).send({ success: true, posts: posts });
@@ -67,7 +68,8 @@ async function getPostById(req, res) {
         const result = await prisma.posts.findUnique({
             where: {
                 id: postId
-            }
+            },
+            include: { owner: { select: { username: true } } }
         });
 
         return res.status(200).send({ success: true, data: result });
@@ -90,7 +92,8 @@ async function getPostsByUser(req, res) {
             where: {
                 ownerId: req.user.id
             },
-            orderBy:{posted_at:'desc'}
+            include: { owner: { select: { username: true } } },
+            orderBy: { posted_at: 'desc' }
         });
 
         return res.status(200).send({ success: true, data: result });

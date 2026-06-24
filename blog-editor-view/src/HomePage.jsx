@@ -26,7 +26,8 @@ function Home() {
                         <Link to={`/view/${post.id}`}>
                             <p>{post.id}</p>
                             <p className="post-title">{post.title}</p>
-                            <p className="multi-line-truncate">{post.content}</p>
+                            <p className="multi-line-truncate summary">{post.content}</p>
+                            <p className="post-author">By: <strong>{post.owner.username}</strong></p>
                             <p className="published-at">Posted on: <strong>{new Date(post.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(post.posted_at).toLocaleTimeString()}</strong></p>
                         </Link>
                         <hr className="posts-separator" />
