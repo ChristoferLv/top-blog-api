@@ -1,30 +1,72 @@
+import { body, validationResult } from 'express-validator';
 import { prisma } from '../lib/prisma.js';
 
-/**
- * 
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
- */
-async function makePost(req, res) {
-    if (!req.user)
-        return res.status(401).send({ success: false, message: "User not logged in." });
+const validatePost = [
+    body("title")
+        .trim()
+        .isLength({ min: 1 }).withMessage("Titles must have at leats 1 character")
+        .isLength({ max: 100 }).withMessage("The maximum title length is 100 characteres"),
+    body("content")
+        .trim()
+        .isLength({ min: 1 }).withMessage("Content must have at leats 1 character")
+        .isLength({ max: 10000 }).withMessage("The maximum content length is 10000 characteres")
+];
 
-    const { title, content } = req.body;
+const makePost = [
+    validatePost,
+    async (req, res) => {
+        const errors = validationResult(req);
 
-    try {
-        const result = await prisma.posts.create({
-            data: {
-                title: title,
-                content: content,
-                ownerId: req.user.id
-            }
-        });
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ success: false, error: errors });
+        }
 
-        return res.status(201).send({ success: true, post: result });
-    } catch (error) {
-        console.log(error);
+        if (!req.user || !req.user.admin)
+            return res.status(401).send({ success: false, message: "Unauthorized." });
+
+        const { title, content } = req.body;
+
+        try {
+            const result = await prisma.posts.create({
+                data: {
+                    title: title,
+                    content: content,
+                    ownerId: req.user.id
+                }
+            });
+
+            return res.status(201).send({ success: true, data: result });
+        } catch (error) {
+            console.log(error);
+        }
     }
-}
+];
+
+// /**
+//  * 
+//  * @param {import('express').Request} req 
+//  * @param {import('express').Response} res 
+//  */
+// async function makePost(req, res) {
+//     if (!req.user || !req.user.admin)
+//         return res.status(401).send({ success: false, message: "Unauthorized." });
+
+//     const { title, content } = req.body;
+
+//     try {
+//         const result = await prisma.posts.create({
+//             data: {
+//                 title: title,
+//                 content: content,
+//                 ownerId: req.user.id
+//             }
+//         });
+
+//         return res.status(201).send({ success: true, post: result });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 /**
  * 
@@ -32,18 +74,16 @@ async function makePost(req, res) {
  * @param {import('express').Response} res 
  */
 async function getAllPosts(req, res) {
-    if (!req.user)
-        return res.status(401).send({ success: false, message: "User not logged in." });
+    if (!req.user || !req.user.admin)
+        return res.status(401).send({ success: false, message: "Unauthorized." });
 
     try {
         const posts = await prisma.posts.findMany({
-            where: {
-                ownerId: req.user.id
-            },
-            include: { owner: { select: { username: true } } }
+            include: { owner: { select: { username: true } } },
+            orderBy: { posted_at: 'desc' }
         });
 
-        return res.status(200).send({ success: true, posts: posts });
+        return res.status(200).send({ success: true, data: posts });
     } catch (error) {
         console.log(error);
     }
@@ -83,14 +123,14 @@ async function getPostById(req, res) {
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  */
-async function getPostsByUser(req, res) {
+async function getPostsForVisitor(req, res) {
     if (!req.user)
         return res.status(401).send({ success: false, message: "User not logged in." });
 
     try {
         const result = await prisma.posts.findMany({
             where: {
-                ownerId: req.user.id
+                published: true
             },
             include: { owner: { select: { username: true } } },
             orderBy: { posted_at: 'desc' }
@@ -102,46 +142,95 @@ async function getPostsByUser(req, res) {
     }
 }
 
-/**
- * 
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
- */
-async function updatePostById(req, res) {
-    if (!req.user)
-        return res.status(401).send({ success: false, message: "User not logged in." });
 
-    const postId = parseInt(req.params.id);
+const updatePostById = [
+    validatePost,
+    async (req, res) => {
+        const errors = validationResult(req);
 
-    if (Number.isNaN(postId))
-        return res.status(400).send({ success: false, message: "Invalid post id." });
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ success: false, error: errors });
+        }
 
-    const post = await prisma.posts.findUnique({ where: { id: postId } });
 
-    if (post.ownerId != req.user.id)
-        return res.status(400).send({ success: false });
+        if (!req.user || !req.user.admin)
+            return res.status(401).send({ success: false, message: "User not logged in." });
 
-    const { title, content } = req.body;
-    console.log(title, content)
+        const postId = parseInt(req.params.id);
 
-    Object.assign(post, { title: title, content: content });
+        if (Number.isNaN(postId))
+            return res.status(400).send({ success: false, message: "Invalid post id." });
 
-    try {
-        const result = await prisma.posts.update({
-            where: {
-                id: postId,
-            },
-            data: {
-                title: post.title,
-                content: post.content
-            }
-        });
+        const post = await prisma.posts.findUnique({ where: { id: postId } });
 
-        return res.status(200).send({ success: true, content: result });
-    } catch (error) {
-        console.log(error);
+        if (post.ownerId != req.user.id)
+            return res.status(400).send({ success: false });
+
+        const { title, content } = req.body;
+        console.log(title, content)
+
+        Object.assign(post, { title: title, content: content });
+
+        try {
+            const result = await prisma.posts.update({
+                where: {
+                    id: postId,
+                },
+                data: {
+                    title: post.title,
+                    content: post.content
+                }
+            });
+
+            return res.status(200).send({ success: true, content: result });
+        } catch (error) {
+            console.log(error);
+        }
     }
-}
+];
+
+
+
+// /**
+//  * 
+//  * @param {import('express').Request} req 
+//  * @param {import('express').Response} res 
+//  */
+// async function updatePostById(req, res) {
+//     if (!req.user)
+//         return res.status(401).send({ success: false, message: "User not logged in." });
+
+//     const postId = parseInt(req.params.id);
+
+//     if (Number.isNaN(postId))
+//         return res.status(400).send({ success: false, message: "Invalid post id." });
+
+//     const post = await prisma.posts.findUnique({ where: { id: postId } });
+
+//     if (post.ownerId != req.user.id)
+//         return res.status(400).send({ success: false });
+
+//     const { title, content } = req.body;
+//     console.log(title, content)
+
+//     Object.assign(post, { title: title, content: content });
+
+//     try {
+//         const result = await prisma.posts.update({
+//             where: {
+//                 id: postId,
+//             },
+//             data: {
+//                 title: post.title,
+//                 content: post.content
+//             }
+//         });
+
+//         return res.status(200).send({ success: true, content: result });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 /**
  * 
@@ -149,7 +238,7 @@ async function updatePostById(req, res) {
  * @param {import('express').Response} res 
  */
 async function removePostById(req, res) {
-    if (!req.user)
+    if (!req.user || !req.user.admin)
         return res.status(401).send({ success: false, message: "User not logged in." });
 
     const postId = parseInt(req.params.id);
@@ -161,11 +250,8 @@ async function removePostById(req, res) {
         const result = await prisma.posts.delete({
             where: {
                 id: postId,
-                ownerId: req.user.id
             }
         });
-
-        console.log("on delete", result);
 
         return res.status(200).send({ success: true });
     } catch (error) {
@@ -182,5 +268,5 @@ export {
     getPostById,
     updatePostById,
     removePostById,
-    getPostsByUser
+    getPostsForVisitor
 }
