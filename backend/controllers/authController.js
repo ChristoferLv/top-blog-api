@@ -11,7 +11,7 @@ const validateNewUser = [
         .isLength({ max: 30 }).withMessage("The maximum username length is 30")
         .toLowerCase()
         .custom(async value => {
-            const exists = await checkUsernameUsed(value);
+            const exists = await prisma.users.findUnique({ where: { username: value } });
             if (exists)
                 throw new Error('Username already in use');
             return true;
@@ -59,19 +59,39 @@ async function login(req, res) {
     }
 }
 
-async function register(req, res) {
-    console.log(req.body)
-    const { username, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+const register = [
+    validateNewUser,
+    async (req, res) => {
+        const errors = validationResult(req);
 
-    const result = await prisma.users.create({ data: { email, password: hashedPassword, username } });
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ success: false, error: errors });
+        }
+
+        const { username, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const result = await prisma.users.create({ data: { password: hashedPassword, username } });
+
+        res.json({
+            data: result,
+            success: true,
+        });
+    }
+]
+
+// async function register(req, res) {
+//     const { username, password } = req.body;
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     const result = await prisma.users.create({ data: { password: hashedPassword, username } });
 
 
-    res.json({
-        result: result,
-        success: true,
-    });
-}
+//     res.json({
+//         result: result,
+//         success: true,
+//     });
+// }
 
 function logout(req, res, next) {
     req.logout((err) => {

@@ -9,10 +9,10 @@ datasource db {
 
 model users {
   id          Int        @id @default(autoincrement())
-  email       String     @unique
   username    String     @unique
   password    String
   enrolled_at DateTime   @default(now())
+  admin       Boolean    @default(false)
   comments    comments[]
   posts       posts[]
 }
