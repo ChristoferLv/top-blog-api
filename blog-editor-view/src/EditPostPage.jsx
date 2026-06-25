@@ -10,6 +10,34 @@ function EditPost() {
     const [comments, setComments] = useState(null);
     const navigate = useNavigate();
     const { postId } = useParams();
+    const [isTitleValid, setIsTitleValid] = useState(true);
+    const [isContentValid, setIsContentValid] = useState(true);
+
+    function handlePostData(event) {
+        const whoChanged = event.target;
+        validadePost({ ...postData, [whoChanged.name]: whoChanged.value })
+        setPostData({ ...postData, [whoChanged.name]: whoChanged.value });
+    }
+
+    function validadePost(values) {
+        let result = true;
+        if (values.title.length < 1 || values.title.length > 100) {
+            result = false;
+            setIsTitleValid(false);
+        }
+        else {
+            setIsTitleValid(true);
+        }
+
+        if (values.content.length < 1 || values.content.length > 10000) {
+            result = false;
+            setIsContentValid(false);
+        }
+        else {
+            setIsContentValid(true);
+        }
+        return result;
+    }
 
     const fetchComments = useCallback(
         async () => {
@@ -19,14 +47,10 @@ function EditPost() {
         }
     );
 
-    function handlePostData(event) {
-        const whoChanged = event.target;
-        setPostData({ ...postData, [whoChanged.name]: whoChanged.value });
-    }
-
-
     async function handleSubmit(e) {
         e.preventDefault();
+        if (!validadePost(postData))
+            return;
         const result = await updatePost(postId, postData);
         if (result && result.success) {
             navigate("/", { replace: true });
@@ -41,7 +65,7 @@ function EditPost() {
             setPostData(post.data);
         }
 
-        
+
         getPost();
         fetchComments();
         return () => { setPostData(null); setComments(null); };
@@ -87,7 +111,8 @@ function EditPost() {
                     <p className="post-author">By: <strong>{postData.owner.username}</strong></p>
                     <p className="published-at">Posted on: <strong>{new Date(postData.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(postData.posted_at).toLocaleTimeString()}</strong></p>
                 </div>
-                <form id="post-form" onSubmit={handleSubmit} className="post-form">
+                {!isTitleValid && <p className="comment-invalid">● Title length must be between 1 and 100 characters!</p>}
+                {!isContentValid && <p className="comment-invalid">● Content length must be between 1 and 10000 characters!</p>}                <form id="post-form" onSubmit={handleSubmit} className="post-form">
                     <input type="text" onChange={handlePostData} name="title" value={postData.title || ""} />
                     <textarea name="content" onChange={handlePostData} value={postData.content || ""}></textarea>
                 </form>
