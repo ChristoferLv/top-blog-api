@@ -5,7 +5,7 @@ import { prisma } from '../lib/prisma.js';
 const validateComment = [
     body("content")
         .trim()
-        .isLength({ min: 3 }).withMessage("Comment must have at leats 3 characteres")
+        .isLength({ min: 2 }).withMessage("Comment must have at leats 2 characteres")
         .isLength({ max: 500 }).withMessage("The maximum comment length is 500 characteres")
 ];
 
