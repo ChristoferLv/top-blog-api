@@ -1,31 +1,71 @@
+import { body, validationResult } from 'express-validator';
 import { prisma } from '../lib/prisma.js';
 
-/**
- * 
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
- */
-async function makeComment(req, res) {
-    if (!req.user)
-        return res.status(401).send({ success: false, message: "User not logged in." });
 
-    const { content } = req.body;
-    const postId = parseInt(req.params.postId);
+const validateComment = [
+    body("content")
+        .trim()
+        .isLength({ min: 3 }).withMessage("Comment must have at leats 3 characteres")
+        .isLength({ max: 500 }).withMessage("The maximum comment length is 500 characteres")
+];
 
-    try {
-        const result = await prisma.comments.create({
-            data: {
-                content: content,
-                ownerId: req.user.id,
-                postId: postId
-            }
-        });
+const makeComment = [
+    validateComment,
+    async (req, res) => {
+        const errors = validationResult(req);
 
-        return res.status(201).send({ success: true, post: result });
-    } catch (error) {
-        console.log(error);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ success: false, error: errors });
+        }
+
+        if (!req.user)
+            return res.status(401).send({ success: false, message: "User not logged in." });
+
+        const { content } = req.body;
+        const postId = parseInt(req.params.postId);
+
+        try {
+            const result = await prisma.comments.create({
+                data: {
+                    content: content,
+                    ownerId: req.user.id,
+                    postId: postId
+                }
+            });
+
+            return res.status(201).send({ success: true, post: result });
+        } catch (error) {
+            console.log(error);
+        }
     }
-}
+];
+
+// /**
+//  * 
+//  * @param {import('express').Request} req 
+//  * @param {import('express').Response} res 
+//  */
+// async function makeComment(req, res) {
+//     if (!req.user)
+//         return res.status(401).send({ success: false, message: "User not logged in." });
+
+//     const { content } = req.body;
+//     const postId = parseInt(req.params.postId);
+
+//     try {
+//         const result = await prisma.comments.create({
+//             data: {
+//                 content: content,
+//                 ownerId: req.user.id,
+//                 postId: postId
+//             }
+//         });
+
+//         return res.status(201).send({ success: true, post: result });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 /**
  * 
@@ -33,8 +73,8 @@ async function makeComment(req, res) {
  * @param {import('express').Response} res 
  */
 async function getAllComments(req, res) {
-    if (!req.user)
-        return res.status(401).send({ success: false, message: "User not logged in." });
+    if (!req.user || !req.user.admin)
+        return res.status(401).send({ success: false, message: "Unauthorized." });
 
     try {
         const comments = await prisma.comments.findMany({
@@ -88,8 +128,8 @@ async function getAllCommentsOfPost(req, res) {
  * @param {import('express').Response} res 
  */
 async function getCommentById(req, res) {
-    if (!req.user)
-        return res.status(401).send({ success: false, message: "User not logged in." });
+    if (!req.user || !req.user.admin)
+        return res.status(401).send({ success: false, message: "Unauthorized." });
 
     const commentId = parseInt(req.params.id);
 
@@ -109,45 +149,91 @@ async function getCommentById(req, res) {
     }
 }
 
-/**
- * 
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
- */
-async function updateCommentById(req, res) {
-    if (!req.user)
-        return res.status(401).send({ success: false, message: "User not logged in." });
+const updateCommentById = [
+    validateComment,
+    async (req, res) => {
+        const errors = validationResult(req);
 
-    const commentId = parseInt(req.params.id);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ success: false, error: errors });
+        }
 
-    if (Number.isNaN(commentId))
-        return res.status(400).send({ success: false, message: "Invalid comment id." });
 
-    const comment = await prisma.comments.findUnique({ where: { id: commentId } });
+        if (!req.user)
+            return res.status(401).send({ success: false, message: "User not logged in." });
 
-    if (comment.ownerId != req.user.id)
-        return res.status(400).send({ success: false });
+        const commentId = parseInt(req.params.id);
 
-    const { content } = req.body;
+        if (Number.isNaN(commentId))
+            return res.status(400).send({ success: false, message: "Invalid comment id." });
 
-    Object.assign(comment, { content });
-    console.log(comment)
+        const comment = await prisma.comments.findUnique({ where: { id: commentId } });
 
-    try {
-        const result = await prisma.comments.update({
-            where: {
-                id: commentId,
-            },
-            data: {
-                content: comment.content
-            }
-        });
+        if (comment.ownerId != req.user.id)
+            return res.status(400).send({ success: false, message: "Unauthorized." });
 
-        return res.status(200).send({ success: true, content: result });
-    } catch (error) {
-        console.log(error);
+        const { content } = req.body;
+
+        Object.assign(comment, { content });
+
+        try {
+            const result = await prisma.comments.update({
+                where: {
+                    id: commentId,
+                },
+                data: {
+                    content: comment.content
+                }
+            });
+
+            return res.status(200).send({ success: true, content: result });
+        } catch (error) {
+            console.log(error);
+        }
     }
-}
+];
+
+
+
+
+// /**
+//  * 
+//  * @param {import('express').Request} req 
+//  * @param {import('express').Response} res 
+//  */
+// async function updateCommentById(req, res) {
+//     if (!req.user)
+//         return res.status(401).send({ success: false, message: "User not logged in." });
+
+//     const commentId = parseInt(req.params.id);
+
+//     if (Number.isNaN(commentId))
+//         return res.status(400).send({ success: false, message: "Invalid comment id." });
+
+//     const comment = await prisma.comments.findUnique({ where: { id: commentId } });
+
+//     if (comment.ownerId != req.user.id)
+//         return res.status(400).send({ success: false, message: "Unauthorized." });
+
+//     const { content } = req.body;
+
+//     Object.assign(comment, { content });
+
+//     try {
+//         const result = await prisma.comments.update({
+//             where: {
+//                 id: commentId,
+//             },
+//             data: {
+//                 content: comment.content
+//             }
+//         });
+
+//         return res.status(200).send({ success: true, content: result });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 /**
  * 
@@ -162,6 +248,11 @@ async function removeCommentById(req, res) {
 
     if (Number.isNaN(commentId))
         return res.status(400).send({ success: false, message: "Invalid comment id." });
+
+    const comment = await prisma.comments.findUnique({ where: { id: commentId } });
+
+    if (!req.user.admin && (comment.ownerId != req.user.id))
+        return res.status(400).send({ success: false, message: "Unauthorized." });
 
     try {
         const result = await prisma.comments.delete({

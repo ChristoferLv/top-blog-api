@@ -1,4 +1,4 @@
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNzgyMzEwMDk4LCJleHAiOjE3ODIzOTY0OTh9.tknettRi5Kid6iaN9MwCO9xAeCfv5Nd6ABO9fOIUmIg
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImlhdCI6MTc4MjQxNTM0MCwiZXhwIjoxNzgyNTAxNzQwfQ.l_Kzk6wHx6hT9Y6HaXq-L-VTO_g9EvqRsUE2Dag_qtU
 
 ###
 
@@ -6,8 +6,9 @@ POST http://localhost:3000/auth/signup
 content-type: application/json
 
 {
-    "username":"User3)(*&",
-    "password":"pass"
+    "username":"u-ser",
+    "password":"pass",
+    "confirmPassword":"pass"
 }
 
 ###
@@ -105,17 +106,17 @@ Authorization: {{token}}
 
 ###
 
-PUT  http://localhost:3000/comments/1
+PUT  http://localhost:3000/comments/28
 content-type: application/json
 Authorization: {{token}}
 
 {
-    "content":"Second comment edited!"
+    "content":"CasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasd"
 }
 
 ###
 
-DELETE  http://localhost:3000/comments/2
+DELETE  http://localhost:3000/comments/26
 content-type: application/json
 Authorization: {{token}}
 
