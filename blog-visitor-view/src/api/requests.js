@@ -135,6 +135,46 @@ async function makeComment(postId, commentContent) {
     }
 }
 
+
+async function deleteComment(commentId) {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(BASE_URL + '/comments/' + commentId, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': token
+            }
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function editComment(commentId, commentData) {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(BASE_URL + '/comments/' + commentId, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify({ content: commentData })
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export {
     getMyPosts,
     makePost,
@@ -143,5 +183,7 @@ export {
     deletePost,
     logOut,
     getCommentsOfPost,
-    makeComment
+    makeComment,
+    editComment,
+    deleteComment
 }

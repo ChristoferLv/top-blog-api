@@ -98,7 +98,8 @@ function EditPost() {
                         comments.length == 0 ? (<p>No comments yet.</p>) : (
                             comments.map((comment) => {
                                 return (<div key={comment.id} className="comment">
-                                    <p className="post-author"><strong>{comment.owner.username}</strong></p>
+                                    <p className="post-author"><strong>{comment.id}</strong></p>
+                                    <p className="post-author"><strong>{comment.username}</strong></p>
                                     <p className="published-at">{new Date(comment.posted_at).toLocaleDateString()} - {new Date(comment.posted_at).toLocaleTimeString()}</p>
                                     <p className="comment-content">{comment.content}</p>
                                     <div className="comment-actions">

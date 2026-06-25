@@ -1,14 +1,25 @@
-import { use, useContext, useEffect, useState } from "react";
+import { use, useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { getCommentsOfPost, getPostById, makeComment } from "./api/requests";
+import { deleteComment, editComment, getCommentsOfPost, getPostById, makeComment } from "./api/requests";
 import { useNavigate, useParams } from "react-router";
 
 function ViewPost() {
+    const { user } = useContext(AuthContext);
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState(null);
     const [myComment, setMyComment] = useState("");
+    const [editing, setEditing] = useState(-1);
+    const [editingValue, setEditingValue] = useState("");
     const { postId } = useParams();
     const navigate = useNavigate();
+
+    const fetchComments = useCallback(
+        async () => {
+            const comments = await getCommentsOfPost(postId);
+            if (comments && comments.success)
+                setComments(comments.data);
+        }
+    );
 
     useEffect(() => {
         async function getPost() {
@@ -16,16 +27,10 @@ function ViewPost() {
             setPost(post.data);
         }
 
-        async function getComments() {
-            const comments = await getCommentsOfPost(postId);
-            setComments(comments.data);
-        }
-
         getPost();
-        getComments();
+        fetchComments();
         return () => { setPost(null); setComments(null); };
     }, []);
-
 
     function handleCommentChange(e) {
         setMyComment(e.target.value);
@@ -37,9 +42,38 @@ function ViewPost() {
         const result = await makeComment(postId, myComment);
         if (result && result.success) {
             setMyComment("");
-            const comments = await getCommentsOfPost(postId);
-            setComments(comments.data);
+            fetchComments();
         }
+    }
+
+    async function handleDeleteComment(commentId) {
+        const result = await deleteComment(commentId);
+        if (result && result.success) {
+            fetchComments();
+        }
+    }
+
+    function startEditing(commentId, value) {
+        setEditing(commentId);
+        setEditingValue(value);
+    }
+
+    function cancelEditing() {
+        setEditing(-1);
+        setEditingValue("");
+    }
+
+    async function sendEditing() {
+        const result = await editComment(editing, editingValue);
+        if (result && result.success) {
+            setEditing(-1);
+            setEditingValue("");
+            fetchComments();
+        }
+    }
+
+    function handleCommentEditing(e) {
+        setEditingValue(e.target.value);
     }
 
     if (!post) return (<><div className="editor-container"><p>Loading...</p></div></>);
@@ -71,10 +105,32 @@ function ViewPost() {
                         comments.length == 0 ? (<p>No comments yet.</p>) : (
                             comments.map((comment) => {
                                 return (<div key={comment.id} className="comment">
-                                    <p className="post-author"><strong>{comment.owner.username}</strong></p>
-                                    <p className="published-at">{comment.posted_at}</p>
-                                    <p className="comment-content">{comment.content}</p>
-                                    <hr className="posts-separator" />
+                                    {comment.id == editing ?
+                                        (<div>
+                                            <p className="post-author"><strong>{comment.username}</strong></p>
+                                            <p className="published-at">{new Date(comment.posted_at).toLocaleDateString()} - {new Date(comment.posted_at).toLocaleTimeString()}</p>
+                                            <input id="comment" type="text" placeholder={"Comments can't be empty"} onChange={handleCommentEditing} value={editingValue} />
+                                            <div className="comment-actions">
+                                                <button className="edit-button" onClick={() => cancelEditing(comment.id)}>Cancel</button>
+                                                <button className="send-comment" onClick={() => sendEditing()}>Save</button>
+                                            </div>
+                                        </div>)
+                                        : (<div>
+                                            <p className="post-author"><strong>{comment.username}</strong></p>
+                                            <p className="published-at">{new Date(comment.posted_at).toLocaleDateString()} - {new Date(comment.posted_at).toLocaleTimeString()}</p>
+                                            <p className="comment-content">{comment.content}</p>
+                                            {user && ((comment.ownerId == user.data.id) ?
+                                                (<div className="comment-actions">
+                                                    <button className="edit-button" onClick={() => startEditing(comment.id, comment.content)}>Edit</button>
+                                                    <button className="delete-button" onClick={() => handleDeleteComment(comment.id)}>Delete</button>
+                                                </div>)
+                                                : null)}
+                                            <hr className="posts-separator" /></div>)
+
+
+
+
+                                    }
                                 </div>);
                             })
                         )
@@ -82,6 +138,7 @@ function ViewPost() {
 
                 </div>
             </div>
+
         </>
     )
 }

@@ -154,6 +154,26 @@ async function deleteComment(commentId) {
     }
 }
 
+async function editComment(commentId, commentData) {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(BASE_URL + '/comments/' + commentId, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify({ content: commentData })
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 export {
     getMyPosts,
@@ -164,5 +184,6 @@ export {
     logOut,
     getCommentsOfPost,
     makeComment,
-    deleteComment
+    deleteComment,
+    editComment
 }

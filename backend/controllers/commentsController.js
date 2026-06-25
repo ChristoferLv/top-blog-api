@@ -61,13 +61,19 @@ async function getAllCommentsOfPost(req, res) {
     const postId = parseInt(req.params.postId);
 
     try {
-        const comments = await prisma.comments.findMany({
-            where: {
-                postId: postId
-            },
-            include: { owner: { select: { username:true } } },
-            orderBy:{posted_at:'desc'}
-        });
+        const comments = await prisma.$queryRawUnsafe(
+            `SELECT comments.*, (CASE WHEN comments."ownerId" = $2 THEN 1 ELSE 0 END) AS fromUser, users.username 
+            FROM comments LEFT JOIN users ON comments."ownerId" = users.id 
+            WHERE comments."postId" = $1 
+            ORDER BY fromUser DESC, comments.posted_at DESC`,
+            postId, req.user.id)
+        // const comments = await prisma.comments.findMany({
+        //     where: {
+        //         postId: postId
+        //     },
+        //     include: { owner: { select: { username:true } } },
+        //     orderBy:{posted_at:'desc'}
+        // });
 
         return res.status(200).send({ success: true, data: comments });
     } catch (error) {
@@ -160,8 +166,7 @@ async function removeCommentById(req, res) {
     try {
         const result = await prisma.comments.delete({
             where: {
-                id: commentId,
-                ownerId: req.user.id
+                id: commentId
             }
         });
 
