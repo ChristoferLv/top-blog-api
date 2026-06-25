@@ -47,6 +47,7 @@ app.get("/protected", passport.authenticate('jwt', { session: false }), (req, re
 })
 
 app.use((err, req, res, next) => {
+  console.log("******Global error midleware******")
   if (res.headersSent) {
     return next(err);
   }

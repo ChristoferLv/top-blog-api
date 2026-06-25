@@ -211,10 +211,12 @@ h1 {
     background-color: rgb(0, 157, 255);
 }
 
+.delete-comment,
 .delete-button {
     background-color: #c12121;
 }
 
+.delete-comment:hover,
 .delete-button:hover {
     background-color: #891717;
 }
@@ -223,6 +225,7 @@ h1 {
     justify-self: flex-end;
 }
 
+.comment-actions,
 .make-comment form div {
     display: flex;
     justify-content: end;

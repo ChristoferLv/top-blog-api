@@ -1,6 +1,6 @@
-import { use, useContext, useEffect, useState } from "react";
+import { use, useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { getCommentsOfPost, getPostById, makeComment } from "./api/requests";
+import { deleteComment, getCommentsOfPost, getPostById, makeComment } from "./api/requests";
 import { useNavigate, useParams } from "react-router";
 
 function ViewPost() {
@@ -10,19 +10,22 @@ function ViewPost() {
     const { postId } = useParams();
     const navigate = useNavigate();
 
+    const fetchComments = useCallback(
+        async () => {
+            const comments = await getCommentsOfPost(postId);
+            if (comments && comments.success)
+                setComments(comments.data);
+        }
+    );
+
     useEffect(() => {
         async function getPost() {
             const post = await getPostById(postId);
             setPost(post.data);
         }
-
-        async function getComments() {
-            const comments = await getCommentsOfPost(postId);
-            setComments(comments.data);
-        }
-
+        
         getPost();
-        getComments();
+        fetchComments();
         return () => { setPost(null); setComments(null); };
     }, []);
 
@@ -40,8 +43,7 @@ function ViewPost() {
         const result = await makeComment(postId, myComment);
         if (result && result.success) {
             setMyComment("");
-            const comments = await getCommentsOfPost(postId);
-            setComments(comments.data);
+            fetchComments();
         }
     }
 

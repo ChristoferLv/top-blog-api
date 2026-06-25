@@ -1,6 +1,6 @@
-import { use, useContext, useEffect, useState } from "react";
+import { use, useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { deletePost, getCommentsOfPost, getMyPosts, getPostById, makePost, updatePost } from "./api/requests";
+import { deleteComment, deletePost, getCommentsOfPost, getMyPosts, getPostById, makePost, updatePost } from "./api/requests";
 import { useNavigate, useParams } from "react-router";
 import ConfirmationDialog from "./components/ConfirmationDialog";
 
@@ -11,6 +11,13 @@ function EditPost() {
     const navigate = useNavigate();
     const { postId } = useParams();
 
+    const fetchComments = useCallback(
+        async () => {
+            const comments = await getCommentsOfPost(postId);
+            if (comments && comments.success)
+                setComments(comments.data);
+        }
+    );
 
     function handlePostData(event) {
         const whoChanged = event.target;
@@ -33,13 +40,10 @@ function EditPost() {
             const post = await getPostById(postId);
             setPostData(post.data);
         }
-        async function getComments() {
-            const comments = await getCommentsOfPost(postId);
-            setComments(comments.data);
-        }
 
+        
         getPost();
-        getComments();
+        fetchComments();
         return () => { setPostData(null); setComments(null); };
 
     }, []);
@@ -61,6 +65,13 @@ function EditPost() {
         setIsDialogOpen(false);
     };
 
+    async function handleDeleteComment(commentId) {
+        const result = await deleteComment(commentId);
+        if (result && result.success) {
+            fetchComments();
+        }
+    }
+
     if (!postData) return (<><div className="editor-container"><p>Loading...</p></div></>);
 
 
@@ -68,7 +79,8 @@ function EditPost() {
         <>
             <div className="editor-container">
                 <div className="actions">
-                    <button className="delete-button" type="submit" onClick={handleDeleteClick}>Delete</button>
+                    <button onClick={() => { navigate("/view/" + postId) }} className="edit-button">View</button>
+                    <button className="delete-button" onClick={handleDeleteClick}>Delete</button>
                     <button className="save-button" type="submit" form="post-form">Save</button>
                 </div>
                 <div className="post-info">
@@ -89,6 +101,9 @@ function EditPost() {
                                     <p className="post-author"><strong>{comment.owner.username}</strong></p>
                                     <p className="published-at">{new Date(comment.posted_at).toLocaleDateString()} - {new Date(comment.posted_at).toLocaleTimeString()}</p>
                                     <p className="comment-content">{comment.content}</p>
+                                    <div className="comment-actions">
+                                        <button className="delete-comment" onClick={() => handleDeleteComment(comment.id)}>Delete</button>
+                                    </div>
                                     <hr className="posts-separator" />
                                 </div>);
                             })

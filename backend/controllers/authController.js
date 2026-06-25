@@ -23,9 +23,13 @@ const validateNewUser = [
 ];
 
 async function getMe(req, res) {
-    if (req.user)
-        return res.json({ success: true, data: req.user });
-    return res.status(400).json({ success: false, data: undefined });
+    try {
+        if (req.user)
+            return res.json({ success: true, data: req.user });
+        return res.status(400).json({ success: false, data: undefined });
+    } catch (error) {
+        return next(error);
+    }
 }
 
 async function login(req, res) {
