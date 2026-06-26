@@ -8,14 +8,14 @@ const postsRouter = Router();
 function tempFunct() { }
 
 postsRouter.post("/", passport.authenticate('jwt', { session: false }), makePost);
-postsRouter.get("/", passport.authenticate('jwt', { session: false }), getAllPosts);
+postsRouter.get("/", passport.authenticate(['jwt', 'anonymous'], { session: false,  }), getAllPosts);
 postsRouter.get("/my", passport.authenticate('jwt', { session: false }), getPostsForVisitor);
-postsRouter.get("/:id", passport.authenticate('jwt', { session: false }), getPostById);
+postsRouter.get("/:id", passport.authenticate(['jwt', 'anonymous'], { session: false }), getPostById);
 postsRouter.put("/:id", passport.authenticate('jwt', { session: false }), updatePostById);
 postsRouter.delete("/:id", passport.authenticate('jwt', { session: false }), removePostById);
 
 postsRouter.post("/:postId/comments", passport.authenticate('jwt', { session: false }), makeComment);
-postsRouter.get("/:postId/comments", passport.authenticate('jwt', { session: false }), getAllCommentsOfPost);
+postsRouter.get("/:postId/comments", passport.authenticate(['jwt', 'anonymous'], { session: false }), getAllCommentsOfPost);
 
 
 

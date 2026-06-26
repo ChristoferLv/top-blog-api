@@ -113,7 +113,7 @@ function EditPost() {
                 </div>
                 {!isTitleValid && <p className="comment-invalid">● Title length must be between 1 and 100 characters!</p>}
                 {!isContentValid && <p className="comment-invalid">● Content length must be between 1 and 10000 characters!</p>}                <form id="post-form" onSubmit={handleSubmit} className="post-form">
-                    <input type="text" onChange={handlePostData} name="title" value={postData.title || ""} />
+                     <textarea className="post-title" onChange={handlePostData} name="title" value={postData.title || ""} ></textarea>
                     <textarea name="content" onChange={handlePostData} value={postData.content || ""}></textarea>
                 </form>
                 <hr className="posts-separator" />
@@ -126,7 +126,7 @@ function EditPost() {
                                     <p className="post-author"><strong>{comment.id}</strong></p>
                                     <p className="post-author"><strong>{comment.username}</strong></p>
                                     <p className="published-at">{new Date(comment.posted_at).toLocaleDateString()} - {new Date(comment.posted_at).toLocaleTimeString()}</p>
-                                    <p className="comment-content">{comment.content}</p>
+                                    <p className="comment-content text-overflow">{comment.content}</p>
                                     <div className="comment-actions">
                                         <button className="delete-comment" onClick={() => handleDeleteComment(comment.id)}>Delete</button>
                                     </div>

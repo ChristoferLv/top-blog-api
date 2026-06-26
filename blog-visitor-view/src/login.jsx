@@ -49,7 +49,6 @@ function LoginPage() {
             }
         });
         const meContent = await meResponse.json();
-        console.log(meContent)
         if (meContent && meContent.success) {
             setUser(meContent.data)
             navigate("/", { replace: true });

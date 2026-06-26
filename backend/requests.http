@@ -38,8 +38,8 @@ content-type: application/json
 Authorization: {{token}}
 
 {
-    "title":"The second post",
-    "content":"Some content"
+    "title":"1",
+    "content":"1"
 }
 
 ###
@@ -111,7 +111,7 @@ content-type: application/json
 Authorization: {{token}}
 
 {
-    "content":"CasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasdCasdasdasd"
+    "content":"Gold"
 }
 
 ###

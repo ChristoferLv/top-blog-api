@@ -115,7 +115,7 @@ function ViewPost() {
                     <p className="published-at">Posted on: <strong>{new Date(post.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(post.posted_at).toLocaleTimeString()}</strong></p>
                 </div>
                 <form className="post-form">
-                    <input type="text" readOnly name="title" value={post.title} />
+                    <textarea className="post-title" type="text" readOnly name="title" value={post.title} ></textarea>
                     <textarea name="content" value={post.content} readOnly></textarea>
                 </form>
                 <hr className="posts-separator" />
@@ -149,7 +149,7 @@ function ViewPost() {
                                         : (<div>
                                             <p className="post-author"><strong>{comment.username}</strong></p>
                                             <p className="published-at">{new Date(comment.posted_at).toLocaleDateString()} - {new Date(comment.posted_at).toLocaleTimeString()}</p>
-                                            <p className="comment-content">{comment.content}</p>
+                                            <p className="comment-content text-overflow">{comment.content}</p>
                                             {user && ((comment.ownerId == user.data.id) ?
                                                 (<div className="comment-actions">
                                                     <button className="edit-button" onClick={() => startEditing(comment.id, comment.content)}>Edit</button>

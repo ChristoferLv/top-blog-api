@@ -110,13 +110,13 @@ function ViewPost() {
                     <p className="published-at">Posted on: <strong>{new Date(post.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(post.posted_at).toLocaleTimeString()}</strong></p>
                 </div>
                 <form className="post-form">
-                    <input type="text" readOnly name="title" value={post.title} />
+                    <textarea className="post-title" type="text" readOnly name="title" value={post.title} />
                     <textarea name="content" value={post.content} readOnly></textarea>
                 </form>
                 <hr className="posts-separator" />
                 <div className="comments">
                     <p className="comments-head">Comments</p>
-                    <div className="make-comment">
+                    {user && <div className="make-comment">
                         <form>
                             <label htmlFor="comment">Make your comment</label>
                             <input className="comment-input" id="comment" type="text" placeholder={"What you have to say?"} onChange={handleCommentChange} value={myComment} />
@@ -125,7 +125,7 @@ function ViewPost() {
                                 <button className="send-comment" onClick={sendComment}>Send</button>
                             </div>
                         </form>
-                    </div>
+                    </div>}
                     {!comments ? (<p>Loading comments...</p>) : (
                         comments.length == 0 ? (<p>No comments yet.</p>) : (
                             comments.map((comment) => {
@@ -144,8 +144,8 @@ function ViewPost() {
                                         : (<div>
                                             <p className="post-author"><strong>{comment.username}</strong></p>
                                             <p className="published-at">{new Date(comment.posted_at).toLocaleDateString()} - {new Date(comment.posted_at).toLocaleTimeString()}</p>
-                                            <p className="comment-content">{comment.content}</p>
-                                            {user && ((comment.ownerId == user.data.id) ?
+                                            <p className="comment-content text-overflow">{comment.content}</p>
+                                            {user && ((comment.ownerId == user.id) ?
                                                 (<div className="comment-actions">
                                                     <button className="edit-button" onClick={() => startEditing(comment.id, comment.content)}>Edit</button>
                                                     <button className="delete-button" onClick={() => handleDeleteComment(comment.id)}>Delete</button>

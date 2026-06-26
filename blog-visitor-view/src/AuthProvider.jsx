@@ -7,7 +7,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const storagedUser = localStorage.getItem('user');
     const storagedToken = localStorage.getItem('token');
-    if (!user) {
+    if (!user) {  
       if (storagedUser) {
         setUser(JSON.parse(storagedUser));
       } else if (storagedToken) {
@@ -24,8 +24,7 @@ export function AuthProvider({ children }) {
           setUser(user)
         });
       } else {
-        if (window.location.pathname != "/login")
-          window.location.pathname = "/login";
+        setUser(null)
       }
     }
   }, []);

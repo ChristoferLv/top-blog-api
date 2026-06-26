@@ -74,8 +74,8 @@ const makePost = [
  * @param {import('express').Response} res 
  */
 async function getAllPosts(req, res) {
-    if (!req.user || !req.user.admin)
-        return res.status(401).send({ success: false, message: "Unauthorized." });
+    // if (!req.user || !req.user.admin)
+    //     return res.status(401).send({ success: false, message: "Unauthorized." });
 
     try {
         const posts = await prisma.posts.findMany({
@@ -96,9 +96,6 @@ async function getAllPosts(req, res) {
  * @param {import('express').Response} res 
  */
 async function getPostById(req, res) {
-    if (!req.user)
-        return res.status(401).send({ success: false, message: "User not logged in." });
-
     const postId = parseInt(req.params.id);
 
     if (Number.isNaN(postId))
@@ -167,7 +164,6 @@ const updatePostById = [
             return res.status(400).send({ success: false });
 
         const { title, content } = req.body;
-        console.log(title, content)
 
         Object.assign(post, { title: title, content: content });
 

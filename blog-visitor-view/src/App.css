@@ -177,11 +177,10 @@ h1 {
 
 .multi-line-truncate {
     display: -webkit-box;
-    -webkit-line-clamp: 2;
-    /* Change this to your preferred number of lines */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    /* Hides the remaining text lines */
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        word-break: break-all;
 }
 
 .editor-container {
@@ -237,7 +236,7 @@ h1 {
 }
 
 .comment-input {
-    margin-bottom: 5px;
+    margin-bottom: 2px;
 }
 
 .send-comment,
@@ -252,7 +251,7 @@ h1 {
     background-color: #0f730c;
 }
 
-.post-form input {
+.post-form .post-title {
     box-shadow: none;
     border: none;
     border-radius: none;
@@ -304,25 +303,18 @@ h1 {
 
 .comment-content {
     margin-top: 3px;
-    overflow-wrap: break-word;
-    word-break: break-all;
-    white-space: normal;
 }
-
-/* .comment input{
-    margin: 2px;
-} */
 
 .comment-invalid {
     color: red;
     margin: 1px;
 }
 
-.hidden {
-    display: none;
+.text-overflow {
+    overflow-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
 }
-
-
 
 
 

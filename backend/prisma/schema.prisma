@@ -34,6 +34,6 @@ model comments {
   posted_at DateTime @default(now())
   postId    Int
   ownerId   Int
-  post      posts    @relation(fields: [postId], references: [id])
+  post      posts    @relation(fields: [postId], references: [id], onDelete: Cascade) 
   owner     users    @relation(fields: [ownerId], references: [id])
 }

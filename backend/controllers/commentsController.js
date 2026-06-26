@@ -95,18 +95,15 @@ async function getAllComments(req, res) {
  * @param {import('express').Response} res 
  */
 async function getAllCommentsOfPost(req, res) {
-    if (!req.user)
-        return res.status(401).send({ success: false, message: "User not logged in." });
-
     const postId = parseInt(req.params.postId);
-
+    const userId = (req.user != undefined ? req.user.id : -1);
     try {
         const comments = await prisma.$queryRawUnsafe(
             `SELECT comments.*, (CASE WHEN comments."ownerId" = $2 THEN 1 ELSE 0 END) AS fromUser, users.username 
             FROM comments LEFT JOIN users ON comments."ownerId" = users.id 
             WHERE comments."postId" = $1 
             ORDER BY fromUser DESC, comments.posted_at DESC`,
-            postId, req.user.id)
+            postId, userId)
         // const comments = await prisma.comments.findMany({
         //     where: {
         //         postId: postId

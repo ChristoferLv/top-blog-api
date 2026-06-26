@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { prisma } from './lib/prisma.js';
 import { Strategy, ExtractJwt } from 'passport-jwt'
+import { Strategy as AnonymousStrategy } from 'passport-anonymous'
 
 const opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -25,5 +26,7 @@ passport.use(new Strategy(opts, async function (jwt_payload, done) {
     return done(error, false)
   }
 }));
+
+passport.use(new AnonymousStrategy());
 
 export { passport }

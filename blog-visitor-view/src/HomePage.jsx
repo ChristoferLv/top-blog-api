@@ -1,6 +1,6 @@
 import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { getMyPosts } from "./api/requests";
+import { getPosts } from "./api/requests";
 import { Link, useNavigate } from "react-router";
 
 function Home() {
@@ -9,12 +9,11 @@ function Home() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function getPosts() {
-            const posts = await getMyPosts(user.token);
+        async function loadPosts() {
+            const posts = await getPosts();
             setPostsList(posts.data);
         }
-        if (user)
-            getPosts();
+        loadPosts();
         return () => setPostsList([]);
     }, [user]);
 
@@ -24,8 +23,7 @@ function Home() {
                 {postsList.map((post) => {
                     return (<div key={post.id} className="post">
                         <Link to={`/view/${post.id}`}>
-                            <p>{post.id}</p>
-                            <p className="post-title">{post.title}</p>
+                            <p className="post-title multi-line-truncate">{post.title}</p>
                             <p className="multi-line-truncate summary">{post.content}</p>
                             <p className="post-author">By: <strong>{post.owner.username}</strong></p>
                             <p className="published-at">Posted on: <strong>{new Date(post.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(post.posted_at).toLocaleTimeString()}</strong></p>
