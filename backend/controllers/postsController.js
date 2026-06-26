@@ -9,7 +9,7 @@ const validatePost = [
     body("content")
         .trim()
         .isLength({ min: 1 }).withMessage("Content must have at leats 1 character")
-        .isLength({ max: 10000 }).withMessage("The maximum content length is 10000 characteres")
+        .isLength({ max: 100000 }).withMessage("The maximum content length is 100000 characteres")
 ];
 
 const makePost = [
@@ -60,7 +60,7 @@ async function getAllPosts(req, res) {
             include: { owner: { select: { username: true } } },
             orderBy: { posted_at: 'desc' }
         });
-        console.log(posts)
+
         return res.status(200).send({ success: true, data: posts });
     } catch (error) {
         console.log(error);

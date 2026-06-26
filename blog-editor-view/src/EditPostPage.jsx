@@ -30,7 +30,7 @@ function EditPost() {
             setIsTitleValid(true);
         }
 
-        if (values.content.length < 1 || values.content.length > 10000) {
+        if (values.content.length < 1 || values.content.length > 100000) {
             result = false;
             setIsContentValid(false);
         }
@@ -123,7 +123,7 @@ function EditPost() {
                     <p className="published-at">Posted on: <strong>{new Date(postData.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(postData.posted_at).toLocaleTimeString()}</strong></p>
                 </div>
                 {!isTitleValid && <p className="comment-invalid">● Title length must be between 1 and 100 characters!</p>}
-                {!isContentValid && <p className="comment-invalid">● Content length must be between 1 and 10000 characters!</p>}                <form id="post-form" onSubmit={handleSubmit} className="post-form">
+                {!isContentValid && <p className="comment-invalid">● Content length must be between 1 and 100000 characters!</p>}                <form id="post-form" onSubmit={handleSubmit} className="post-form">
                     <textarea className="post-title" onChange={handlePostData} name="title" value={postData.title || ""} ></textarea>
                     <textarea name="content" onChange={handlePostData} value={postData.content || ""}></textarea>
                 </form>

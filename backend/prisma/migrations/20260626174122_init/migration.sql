@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
-    "username" TEXT NOT NULL,
+    "username" VARCHAR(30) NOT NULL,
     "password" TEXT NOT NULL,
     "enrolled_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "admin" BOOLEAN NOT NULL DEFAULT false,
@@ -12,8 +12,8 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "posts" (
     "id" SERIAL NOT NULL,
-    "title" TEXT NOT NULL,
-    "content" TEXT NOT NULL,
+    "title" VARCHAR(100) NOT NULL,
+    "content" VARCHAR(100000) NOT NULL,
     "posted_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "published" BOOLEAN NOT NULL DEFAULT true,
     "ownerId" INTEGER NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE "posts" (
 -- CreateTable
 CREATE TABLE "comments" (
     "id" SERIAL NOT NULL,
-    "content" TEXT NOT NULL,
+    "content" VARCHAR(500) NOT NULL,
     "posted_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "postId" INTEGER NOT NULL,
     "ownerId" INTEGER NOT NULL,

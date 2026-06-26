@@ -26,7 +26,7 @@ function CreatePost() {
             setIsTitleValid(true);
         }
 
-        if (values.content.length < 1 || values.content.length > 10000) {
+        if (values.content.length < 1 || values.content.length > 100000) {
             result = false;
             setIsContentValid(false);
         }
@@ -54,7 +54,7 @@ function CreatePost() {
             <div className="editor-container">
                 <button className="publish-button" form="post-form" type="submit">Publish</button>
                 {!isTitleValid && <p className="comment-invalid">● Title length must be between 1 and 100 characters!</p>}
-                {!isContentValid && <p className="comment-invalid">● Content length must be between 1 and 10000 characters!</p>}
+                {!isContentValid && <p className="comment-invalid">● Content length must be between 1 and 100000 characters!</p>}
                 <form id="post-form" onSubmit={handleSubmit} className="post-form">
                     <input type="text" onChange={handlePostData} name="title" placeholder="Title" value={postData.title} />
                     <textarea name="content" onChange={handlePostData} value={postData.content} placeholder="Your creation..."></textarea>

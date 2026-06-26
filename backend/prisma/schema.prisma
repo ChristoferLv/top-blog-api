@@ -9,8 +9,8 @@ datasource db {
 
 model users {
   id          Int        @id @default(autoincrement())
-  username    String     @unique
-  password    String
+  username    String     @unique @db.VarChar(30)
+  password    String     
   enrolled_at DateTime   @default(now())
   admin       Boolean    @default(false)
   comments    comments[]
@@ -19,8 +19,8 @@ model users {
 
 model posts {
   id        Int        @id @default(autoincrement())
-  title     String
-  content   String
+  title     String     @db.VarChar(100)
+  content   String     @db.VarChar(100000)
   posted_at DateTime   @default(now())
   published Boolean    @default(true)
   ownerId   Int
@@ -30,10 +30,10 @@ model posts {
 
 model comments {
   id        Int      @id @default(autoincrement())
-  content   String
+  content   String   @db.VarChar(500)
   posted_at DateTime @default(now())
   postId    Int
   ownerId   Int
-  post      posts    @relation(fields: [postId], references: [id], onDelete: Cascade) 
+  post      posts    @relation(fields: [postId], references: [id], onDelete: Cascade)
   owner     users    @relation(fields: [ownerId], references: [id])
 }
