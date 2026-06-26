@@ -42,10 +42,6 @@ app.use("/auth", authRouter)
 app.use("/posts", postsRouter)
 app.use("/comments", commentsRouter)
 
-app.get("/protected", passport.authenticate('jwt', { session: false }), (req, res) => {
-  return res.status(200).send({ text: "YAY! this is a protected Route", content: req.user });
-})
-
 app.use((err, req, res, next) => {
   console.log("******Global error midleware******")
   if (res.headersSent) {

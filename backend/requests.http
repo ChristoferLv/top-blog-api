@@ -1,4 +1,4 @@
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImlhdCI6MTc4MjQ4MzI3NywiZXhwIjoxNzgyNTY5Njc3fQ.WEmcrnxpPn7ddF77wuw_msrEpJb_rCd7EXfbG90xtVo
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTc4MjUxMTEyMywiZXhwIjoxNzgyNTk3NTIzfQ.LSm9KWVBlahM4QgTErZ-lXYMQ3LUtS_RLudP4Ifnf9M
 
 ###
 
@@ -28,18 +28,13 @@ Authorization: {{token}}
 
 ###
 
-GET http://localhost:3000/protected
-Authorization: {{token}}
-
-###
-
 POST http://localhost:3000/posts
 content-type: application/json
 Authorization: {{token}}
 
 {
-    "title":"1",
-    "content":"1"
+    "title":"Post Title",
+    "content":"Post content and insights!"
 }
 
 ###
@@ -50,19 +45,13 @@ Authorization: {{token}}
 
 ###
 
-GET http://localhost:3000/posts/my
+GET http://localhost:3000/posts/32
 content-type: application/json
 Authorization: {{token}}
 
 ###
 
-GET http://localhost:3000/posts/9
-content-type: application/json
-Authorization: {{token}}
-
-###
-
-PUT  http://localhost:3000/posts/3
+PUT  http://localhost:3000/posts/42
 content-type: application/json
 Authorization: {{token}}
 
@@ -73,22 +62,22 @@ Authorization: {{token}}
 
 ###
 
-DELETE  http://localhost:3000/posts/2
+DELETE  http://localhost:3000/posts/43
 content-type: application/json
 Authorization: {{token}}
 
 ###
 
-POST  http://localhost:3000/posts/3/change-status
+POST  http://localhost:3000/posts/44/change-status
 content-type: application/json
 Authorization: {{token}}
 
 {
-    "status":true
+    "status":false
 }
 ###
 
-POST http://localhost:3000/posts/9/comments
+POST http://localhost:3000/posts/36/comments
 content-type: application/json
 Authorization: {{token}}
 
@@ -98,7 +87,7 @@ Authorization: {{token}}
 
 ###
 
-GET http://localhost:3000/posts/1/comments
+GET http://localhost:3000/posts/36/comments
 content-type: application/json
 Authorization: {{token}}
 
@@ -110,13 +99,13 @@ Authorization: {{token}}
 
 ###
 
-GET http://localhost:3000/comments/2
+GET http://localhost:3000/comments/13
 content-type: application/json
 Authorization: {{token}}
 
 ###
 
-PUT  http://localhost:3000/comments/28
+PUT  http://localhost:3000/comments/13
 content-type: application/json
 Authorization: {{token}}
 
@@ -126,7 +115,7 @@ Authorization: {{token}}
 
 ###
 
-DELETE  http://localhost:3000/comments/26
+DELETE  http://localhost:3000/comments/13
 content-type: application/json
 Authorization: {{token}}
 

@@ -24,6 +24,11 @@ const makeComment = [
         const { content } = req.body;
         const postId = parseInt(req.params.postId);
 
+        const post = await prisma.posts.findUnique({ where: { id: postId } });
+
+        if (!post)
+            return res.status(400).send({ success: false, message: "Invalid post id." })
+
         try {
             const result = await prisma.comments.create({
                 data: {
@@ -113,7 +118,10 @@ async function getCommentById(req, res) {
             }
         });
 
-        return res.status(200).send({ success: true, post: result });
+        if (!result)
+            return res.status(404).send({ success: false, message: "Comment not found." })
+
+        return res.status(200).send({ success: true, data: result });
     } catch (error) {
         console.log(error);
     }
