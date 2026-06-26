@@ -379,5 +379,8 @@ h1 {
     background: #d32d27;
     color: #fff;
     font-size: 14px;
+}
 
+.no-posts{
+    text-align: center;
 }

@@ -1,4 +1,4 @@
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImlhdCI6MTc4MjQxNTM0MCwiZXhwIjoxNzgyNTAxNzQwfQ.l_Kzk6wHx6hT9Y6HaXq-L-VTO_g9EvqRsUE2Dag_qtU
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJVc2VyMSIsImlhdCI6MTc4MjQ4MzI3NywiZXhwIjoxNzgyNTY5Njc3fQ.WEmcrnxpPn7ddF77wuw_msrEpJb_rCd7EXfbG90xtVo
 
 ###
 
@@ -6,7 +6,7 @@ POST http://localhost:3000/auth/signup
 content-type: application/json
 
 {
-    "username":"u-ser",
+    "username":"u-seraaa",
     "password":"pass",
     "confirmPassword":"pass"
 }
@@ -17,8 +17,8 @@ POST http://localhost:3000/auth/login
 content-type: application/json
 
 {
-    "username":"User1",
-    "password":"pass"
+    "username":"admin",
+    "password":"admin123"
 }
 
 ###
@@ -72,10 +72,20 @@ Authorization: {{token}}
 }
 
 ###
+
 DELETE  http://localhost:3000/posts/2
 content-type: application/json
 Authorization: {{token}}
 
+###
+
+POST  http://localhost:3000/posts/3/change-status
+content-type: application/json
+Authorization: {{token}}
+
+{
+    "status":true
+}
 ###
 
 POST http://localhost:3000/posts/9/comments

@@ -37,10 +37,10 @@ async function getMe(req, res) {
 
 async function login(req, res) {
     const { username, password } = req.body;
-
+    console.log(username, password)
     try {
         const user = await prisma.users.findUnique({ where: { username: username } });
-
+        console.log(user)
         if (!user) {
             return res.json({ success: false, message: "Wrong credentials" });
         }

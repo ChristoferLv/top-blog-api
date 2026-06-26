@@ -20,17 +20,18 @@ function Home() {
     return (
         <>
             <div className="posts-container">
-                {postsList.map((post) => {
-                    return (<div key={post.id} className="post">
-                        <Link to={`/view/${post.id}`}>
-                            <p className="post-title multi-line-truncate">{post.title}</p>
-                            <p className="multi-line-truncate summary">{post.content}</p>
-                            <p className="post-author">By: <strong>{post.owner.username}</strong></p>
-                            <p className="published-at">Posted on: <strong>{new Date(post.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(post.posted_at).toLocaleTimeString()}</strong></p>
-                        </Link>
-                        <hr className="posts-separator" />
-                    </div>)
-                })}
+                {postsList.length > 0 ?
+                    postsList.map((post) => {
+                        return (<div key={post.id} className="post">
+                            <Link to={`/view/${post.id}`}>
+                                <p className="post-title multi-line-truncate">{post.title}</p>
+                                <p className="multi-line-truncate summary">{post.content}</p>
+                                <p className="post-author">By: <strong>{post.owner.username}</strong></p>
+                                <p className="published-at">Posted on: <strong>{new Date(post.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(post.posted_at).toLocaleTimeString()}</strong></p>
+                            </Link>
+                            <hr className="posts-separator" />
+                        </div>)
+                    }):<p className="no-posts">No posts yet...</p>}
             </div >
 
         </>

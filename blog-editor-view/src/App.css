@@ -403,3 +403,7 @@ h1 {
 .not-published{
     color:  #d32d27
 }
+
+.no-posts{
+    text-align: center;
+}
