@@ -6,6 +6,8 @@ function LoginPage() {
     const [credentials, setCredentials] = useState({ username: '', password: '' });
     const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [errorVisible, setErrorVisible] = useState(false);
+
 
     function isAllValid() {
         const inputs = document.querySelectorAll("input");
@@ -37,6 +39,13 @@ function LoginPage() {
             },
             body: JSON.stringify(credentials)
         });
+
+        setErrorVisible(false);
+        if (rawResponse.status == 401) {
+            setErrorVisible(true);
+            return;
+        }
+
         const content = await rawResponse.json();
         localStorage.setItem("token", content.token);
 
@@ -48,7 +57,7 @@ function LoginPage() {
                 'Authorization': content.token
             }
         });
-         const meContent = await meResponse.json();
+        const meContent = await meResponse.json();
         if (meContent && meContent.success) {
             localStorage.setItem("user", JSON.stringify({ token: content.token, ...meContent.data }));
             setUser({ token: content.token, ...meContent.data })
@@ -79,6 +88,9 @@ function LoginPage() {
                     placeholder="Enter your Password"
                     onChange={handlePersonalInfo}
                     required />
+
+                {errorVisible && <p className="login-error">Wrong credentials.</p>}
+
 
                 <div className="wrap">
                     <button type="submit">

@@ -28,7 +28,7 @@ const validateNewUser = [
 async function getMe(req, res) {
     try {
         if (req.user)
-            return res.json({ success: true, data: req.user });
+            return res.status(200).json({ success: true, data: req.user });
         return res.status(400).json({ success: false, data: undefined });
     } catch (error) {
         return next(error);
@@ -37,23 +37,21 @@ async function getMe(req, res) {
 
 async function login(req, res) {
     const { username, password } = req.body;
-    console.log(username, password)
     try {
-        const user = await prisma.users.findUnique({ where: { username: username } });
-        console.log(user)
+        const user = await prisma.users.findUnique({ where: { username: username.toLowerCase() } });
         if (!user) {
-            return res.json({ success: false, message: "Wrong credentials" });
+            return res.status(401).json({ success: false, message: "Wrong credentials" });
         }
 
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-            return res.json({ success: false, message: "Wrong credentials" });
+            return res.status(401).json({ success: false, message: "Wrong credentials" });
         }
 
         const payload = { id: user.id, username: user.username, email: user.email };
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        return res.json({
+        return res.status(200).json({
             success: true,
             token: `Bearer ${token}`
         });
@@ -79,7 +77,7 @@ const register = [
 
         const result = await prisma.users.create({ data: { password: hashedPassword, username } });
 
-        res.json({
+        res.status(201).json({
             data: result,
             success: true,
         });

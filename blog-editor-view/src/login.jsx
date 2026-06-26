@@ -6,6 +6,7 @@ function LoginPage() {
     const [credentials, setCredentials] = useState({ username: '', password: '' });
     const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [errorVisible, setErrorVisible] = useState(false);
 
     function isAllValid() {
         const inputs = document.querySelectorAll("input");
@@ -29,30 +30,41 @@ function LoginPage() {
     }
 
     async function login() {
-        const rawResponse = await fetch('http://localhost:3000/auth/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(credentials)
-        });
-        const content = await rawResponse.json();
-        localStorage.setItem("token", content.token);
-
-        const meResponse = await fetch('http://localhost:3000/auth/me', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': content.token
+        try {
+            const rawResponse = await fetch('http://localhost:3000/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(credentials)
+            });
+            
+            setErrorVisible(false);
+            if (rawResponse.status == 401) {
+                setErrorVisible(true);
+                return;
             }
-        });
-        const meContent = await meResponse.json();
-        if (meContent && meContent.success) {
-            localStorage.setItem("user", JSON.stringify({ token: content.token, ...meContent.data }));
-            setUser({ token: content.token, ...meContent.data })
-            navigate("/", { replace: true });
+
+            const content = await rawResponse.json();
+            localStorage.setItem("token", content.token);
+
+            const meResponse = await fetch('http://localhost:3000/auth/me', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': content.token
+                }
+            });
+            const meContent = await meResponse.json();
+            if (meContent && meContent.success) {
+                localStorage.setItem("user", JSON.stringify({ token: content.token, ...meContent.data }));
+                setUser({ token: content.token, ...meContent.data })
+                navigate("/", { replace: true });
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -79,6 +91,8 @@ function LoginPage() {
                     placeholder="Enter your Password"
                     onChange={handlePersonalInfo}
                     required />
+
+                {errorVisible && <p className="login-error">Wrong credentials.</p>}
 
                 <div className="wrap">
                     <button type="submit">

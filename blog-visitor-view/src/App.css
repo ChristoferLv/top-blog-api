@@ -52,6 +52,10 @@ input {
     border-radius: 5px;
 }
 
+.auth-form input{
+    margin-bottom: 2px;
+}
+
 .auth-form button {
     padding: 15px;
     border-radius: 10px;
@@ -383,4 +387,10 @@ h1 {
 
 .no-posts{
     text-align: center;
+}
+
+.login-error{
+    color: red;
+    text-align: left;
+    margin-top: 2px;
 }

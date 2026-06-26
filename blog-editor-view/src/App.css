@@ -407,3 +407,9 @@ h1 {
 .no-posts{
     text-align: center;
 }
+
+.login-error{
+    color: red;
+    text-align: left;
+    margin-top: 2px;
+}
