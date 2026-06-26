@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import ConfirmationDialog from "./components/ConfirmationDialog";
 
 function EditPost() {
+    const { user } = useContext(AuthContext);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [postData, setPostData] = useState(null);
     const [comments, setComments] = useState(null);
@@ -110,12 +111,12 @@ function EditPost() {
     return (
         <>
             <div className="editor-container">
-                <div className="actions">
+                {user&&<div className="actions">
                     <button onClick={() => { navigate("/view/" + postId) }} className="edit-button">View</button>
                     <button className="toggle-publish-button" onClick={handlePublishUnpublish}>{postData.published ? "Unpublish" : "Publish"}</button>
                     <button className="delete-button" onClick={handleDeleteClick}>Delete</button>
                     <button className="save-button" type="submit" form="post-form">Save</button>
-                </div>
+                </div>}
                 <div className="post-info">
                     <p className={postData.published ? "published" : "not-published"}>Status: {postData.published ? "Published" : "Not Published"}</p>
                     <p className="post-author">By: <strong>{postData.owner.username}</strong></p>
@@ -137,9 +138,9 @@ function EditPost() {
                                     <p className="post-author"><strong>{comment.username}</strong></p>
                                     <p className="published-at">{new Date(comment.posted_at).toLocaleDateString()} - {new Date(comment.posted_at).toLocaleTimeString()}</p>
                                     <p className="comment-content text-overflow">{comment.content}</p>
-                                    <div className="comment-actions">
+                                    {user&&<div className="comment-actions">
                                         <button className="delete-comment" onClick={() => handleDeleteComment(comment.id)}>Delete</button>
-                                    </div>
+                                    </div>}
                                     <hr className="posts-separator" />
                                 </div>);
                             })

@@ -106,13 +106,10 @@ function ViewPost() {
 
     if (!post) return (<><div className="editor-container"><p>Loading...</p></div></>);
 
-    console.log("user", user)
-    console.log("post", post)
-    console.log("commenst", comments)
     return (
         <>
             <div className="editor-container">
-                <button className="edit-button" onClick={goToEdit}>Edit</button>
+                {user && <button className="edit-button" onClick={goToEdit}>Edit</button>}
                 <div className="post-info">
                     <p className={post.published ? "published" : "not-published"}>Status: {post.published ? "Published" : "Not Published"}</p>
                     <p className="post-author">By: <strong>{post.owner.username}</strong></p>
@@ -125,7 +122,7 @@ function ViewPost() {
                 <hr className="posts-separator" />
                 <div className="comments">
                     <p className="comments-head">Comments</p>
-                    <div className="make-comment">
+                    {user&&<div className="make-comment">
                         <form>
                             <label htmlFor="comment">Make your comment</label>
                             <input className="comment-input" id="comment" type="text" placeholder={"What you have to say?"} onChange={handleCommentChange} value={myComment} />
@@ -134,7 +131,7 @@ function ViewPost() {
                                 <button className="send-comment" onClick={sendComment}>Send</button>
                             </div>
                         </form>
-                    </div>
+                    </div>}
                     {!comments ? (<p>Loading comments...</p>) : (
                         comments.length == 0 ? (<p>No comments yet.</p>) : (
                             comments.map((comment) => {
