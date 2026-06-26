@@ -267,6 +267,7 @@ h1 {
     background-color: #0f730c;
 }
 
+.post-form input,
 .post-form .post-title {
     box-shadow: none;
     border: none;

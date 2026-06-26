@@ -86,33 +86,8 @@ const register = [
     }
 ]
 
-// async function register(req, res) {
-//     const { username, password } = req.body;
-//     const hashedPassword = await bcrypt.hash(password, 10);
-
-//     const result = await prisma.users.create({ data: { password: hashedPassword, username } });
-
-
-//     res.json({
-//         result: result,
-//         success: true,
-//     });
-// }
-
-function logout(req, res, next) {
-    req.logout((err) => {
-        if (err) {
-            return next(err);
-        }
-        req.session.destroy((err) => {
-            res.redirect("/");
-        });
-    });
-}
-
 export {
     getMe,
     login,
     register,
-    logout,
 }

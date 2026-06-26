@@ -48,9 +48,10 @@ function LoginPage() {
                 'Authorization': content.token
             }
         });
-        const meContent = await meResponse.json();
+         const meContent = await meResponse.json();
         if (meContent && meContent.success) {
-            setUser(meContent.data)
+            localStorage.setItem("user", JSON.stringify({ token: content.token, ...meContent.data }));
+            setUser({ token: content.token, ...meContent.data })
             navigate("/", { replace: true });
         }
     }

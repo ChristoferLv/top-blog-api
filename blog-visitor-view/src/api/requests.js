@@ -24,67 +24,11 @@ async function getPosts() {
     }
 }
 
-async function makePost(postData) {
-    try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(BASE_URL + '/posts', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': token
-            },
-            body: JSON.stringify(postData)
-        });
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 async function getPostById(postId) {
     try {
         const token = localStorage.getItem("token");
         const response = await fetch(BASE_URL + '/posts/' + postId, {
             method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': token
-            },
-        });
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-async function updatePost(postId, newData) {
-    try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(BASE_URL + '/posts/' + postId, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': token
-            },
-            body: JSON.stringify(newData)
-        });
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-async function deletePost(postId) {
-    try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(BASE_URL + '/posts/' + postId, {
-            method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -135,7 +79,6 @@ async function makeComment(postId, commentContent) {
     }
 }
 
-
 async function deleteComment(commentId) {
     try {
         const token = localStorage.getItem("token");
@@ -177,10 +120,7 @@ async function editComment(commentId, commentData) {
 
 export {
     getPosts,
-    makePost,
     getPostById,
-    updatePost,
-    deletePost,
     logOut,
     getCommentsOfPost,
     makeComment,

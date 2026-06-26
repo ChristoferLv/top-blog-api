@@ -49,9 +49,9 @@ function LoginPage() {
             }
         });
         const meContent = await meResponse.json();
-        console.log(meContent)
         if (meContent && meContent.success) {
-            setUser(meContent.data)
+            localStorage.setItem("user", JSON.stringify({ token: content.token, ...meContent.data }));
+            setUser({ token: content.token, ...meContent.data })
             navigate("/", { replace: true });
         }
     }

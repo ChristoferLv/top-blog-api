@@ -19,9 +19,9 @@ export function AuthProvider({ children }) {
             'Authorization': storagedToken
           }
         }).then((response) => response.json()).then((data) => {
-          const user = { token: storagedToken, ...data };
+          const user = { token: storagedToken, ...data.data };
           localStorage.setItem("user", JSON.stringify(user));
-          setUser(user)
+          setUser(user);
         });
       } else {
         setUser(null)

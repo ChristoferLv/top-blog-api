@@ -40,33 +40,6 @@ const makeComment = [
     }
 ];
 
-// /**
-//  * 
-//  * @param {import('express').Request} req 
-//  * @param {import('express').Response} res 
-//  */
-// async function makeComment(req, res) {
-//     if (!req.user)
-//         return res.status(401).send({ success: false, message: "User not logged in." });
-
-//     const { content } = req.body;
-//     const postId = parseInt(req.params.postId);
-
-//     try {
-//         const result = await prisma.comments.create({
-//             data: {
-//                 content: content,
-//                 ownerId: req.user.id,
-//                 postId: postId
-//             }
-//         });
-
-//         return res.status(201).send({ success: true, post: result });
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
 /**
  * 
  * @param {import('express').Request} req 
@@ -189,48 +162,6 @@ const updateCommentById = [
         }
     }
 ];
-
-
-
-
-// /**
-//  * 
-//  * @param {import('express').Request} req 
-//  * @param {import('express').Response} res 
-//  */
-// async function updateCommentById(req, res) {
-//     if (!req.user)
-//         return res.status(401).send({ success: false, message: "User not logged in." });
-
-//     const commentId = parseInt(req.params.id);
-
-//     if (Number.isNaN(commentId))
-//         return res.status(400).send({ success: false, message: "Invalid comment id." });
-
-//     const comment = await prisma.comments.findUnique({ where: { id: commentId } });
-
-//     if (comment.ownerId != req.user.id)
-//         return res.status(400).send({ success: false, message: "Unauthorized." });
-
-//     const { content } = req.body;
-
-//     Object.assign(comment, { content });
-
-//     try {
-//         const result = await prisma.comments.update({
-//             where: {
-//                 id: commentId,
-//             },
-//             data: {
-//                 content: comment.content
-//             }
-//         });
-
-//         return res.status(200).send({ success: true, content: result });
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
 
 /**
  * 

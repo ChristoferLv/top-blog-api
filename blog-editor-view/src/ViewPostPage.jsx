@@ -106,6 +106,9 @@ function ViewPost() {
 
     if (!post) return (<><div className="editor-container"><p>Loading...</p></div></>);
 
+    console.log("user", user)
+    console.log("post", post)
+    console.log("commenst", comments)
     return (
         <>
             <div className="editor-container">
