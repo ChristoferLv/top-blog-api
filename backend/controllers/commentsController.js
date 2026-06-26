@@ -1,4 +1,4 @@
-import { body, validationResult } from 'express-validator';
+import { body, matchedData, validationResult } from 'express-validator';
 import { prisma } from '../lib/prisma.js';
 
 
@@ -21,13 +21,14 @@ const makeComment = [
         if (!req.user)
             return res.status(401).send({ success: false, message: "User not logged in." });
 
-        const { content } = req.body;
         const postId = parseInt(req.params.postId);
 
         const post = await prisma.posts.findUnique({ where: { id: postId } });
 
         if (!post)
-            return res.status(400).send({ success: false, message: "Invalid post id." })
+            return res.status(400).send({ success: false, message: "Invalid post id." });
+
+        const { content } = matchedData(req);
 
         try {
             const result = await prisma.comments.create({
@@ -150,7 +151,7 @@ const updateCommentById = [
         if (comment.ownerId != req.user.id)
             return res.status(400).send({ success: false, message: "Unauthorized." });
 
-        const { content } = req.body;
+        const { content } = matchedData(req);
 
         Object.assign(comment, { content });
 

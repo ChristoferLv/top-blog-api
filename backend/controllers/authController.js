@@ -71,11 +71,10 @@ const register = [
             return res.status(400).json({ success: false, error: errors });
         }
 
-
-        const { username, password } = req.body;
+        const { username, password } = matchedData(req);
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const result = await prisma.users.create({ data: { password: hashedPassword, username } });
+        const result = await prisma.users.create({ data: { password: hashedPassword, username:username } });
 
         res.status(201).json({
             data: result,

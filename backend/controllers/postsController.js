@@ -1,4 +1,4 @@
-import { body, validationResult } from 'express-validator';
+import { body, matchedData, validationResult } from 'express-validator';
 import { prisma } from '../lib/prisma.js';
 
 const validatePost = [
@@ -24,7 +24,7 @@ const makePost = [
         if (!req.user || !req.user.admin)
             return res.status(401).send({ success: false, message: "Unauthorized." });
 
-        const { title, content } = req.body;
+        const { title, content } = matchedData(req);
 
         try {
             const result = await prisma.posts.create({
@@ -32,7 +32,7 @@ const makePost = [
                     title: title,
                     content: content,
                     ownerId: req.user.id,
-                    published:false
+                    published: false
                 }
             });
 
@@ -56,7 +56,7 @@ async function getAllPosts(req, res) {
     }
     try {
         const posts = await prisma.posts.findMany({
-            where: {...includePublished },
+            where: { ...includePublished },
             include: { owner: { select: { username: true } } },
             orderBy: { posted_at: 'desc' }
         });
@@ -116,7 +116,7 @@ const updatePostById = [
         if (post.ownerId != req.user.id)
             return res.status(400).send({ success: false });
 
-        const { title, content } = req.body;
+        const { title, content } = matchedData(req);
 
         Object.assign(post, { title: title, content: content });
 
