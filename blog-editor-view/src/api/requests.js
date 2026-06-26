@@ -7,12 +7,14 @@ async function logOut() {
 }
 
 async function getPosts() {
+    const token = localStorage.getItem("token");
     try {
         const response = await fetch(BASE_URL + '/posts', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': token
             }
         });
         const data = await response.json();
@@ -88,6 +90,25 @@ async function deletePost(postId) {
                 'Content-Type': 'application/json',
                 'Authorization': token
             },
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function changePostStatus(postId, status) {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(BASE_URL + `/posts/${postId}/change-status`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify({ status: status })
         });
         const data = await response.json();
         return data;
@@ -179,6 +200,7 @@ export {
     getPostById,
     updatePost,
     deletePost,
+    changePostStatus,
     logOut,
     getCommentsOfPost,
     makeComment,

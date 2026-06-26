@@ -74,15 +74,18 @@ const makePost = [
  * @param {import('express').Response} res 
  */
 async function getAllPosts(req, res) {
-    // if (!req.user || !req.user.admin)
-    //     return res.status(401).send({ success: false, message: "Unauthorized." });
 
+    let includePublished = { published: true };
+    if (req.user && req.user.admin) {
+        includePublished = {};
+    }
     try {
         const posts = await prisma.posts.findMany({
+            where: {...includePublished },
             include: { owner: { select: { username: true } } },
             orderBy: { posted_at: 'desc' }
         });
-
+        console.log(posts)
         return res.status(200).send({ success: true, data: posts });
     } catch (error) {
         console.log(error);
@@ -151,7 +154,7 @@ const updatePostById = [
 
 
         if (!req.user || !req.user.admin)
-            return res.status(401).send({ success: false, message: "User not logged in." });
+            return res.status(401).send({ success: false, message: "Unauthorized." });
 
         const postId = parseInt(req.params.id);
 
@@ -184,6 +187,7 @@ const updatePostById = [
         }
     }
 ];
+
 
 
 
@@ -235,7 +239,7 @@ const updatePostById = [
  */
 async function removePostById(req, res) {
     if (!req.user || !req.user.admin)
-        return res.status(401).send({ success: false, message: "User not logged in." });
+        return res.status(401).send({ success: false, message: "Unauthorized." });
 
     const postId = parseInt(req.params.id);
 
@@ -255,6 +259,30 @@ async function removePostById(req, res) {
     }
 }
 
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+async function changePublishedStatus(req, res) {
+    if (!req.user || !req.user.admin)
+        return res.status(401).send({ success: false, message: "Unauthorized." });
+
+    const postId = parseInt(req.params.id);
+    const { status } = req.body;
+
+    try {
+        const result = await prisma.posts.update({
+            where: { id: postId },
+            data: { published: status }
+        });
+
+        return res.status(200).send({ success: true, data: result });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 
@@ -264,5 +292,6 @@ export {
     getPostById,
     updatePostById,
     removePostById,
-    getPostsForVisitor
+    getPostsForVisitor,
+    changePublishedStatus
 }

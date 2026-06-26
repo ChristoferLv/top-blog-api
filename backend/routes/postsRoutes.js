@@ -1,6 +1,6 @@
 import { Router } from "express"
 import passport from "passport";
-import { getAllPosts, getPostById, getPostsForVisitor, makePost, removePostById, updatePostById } from "../controllers/postsController.js";
+import { changePublishedStatus, getAllPosts, getPostById, getPostsForVisitor, makePost, removePostById, updatePostById } from "../controllers/postsController.js";
 import { getAllCommentsOfPost, makeComment } from "../controllers/commentsController.js";
 
 const postsRouter = Router();
@@ -8,11 +8,12 @@ const postsRouter = Router();
 function tempFunct() { }
 
 postsRouter.post("/", passport.authenticate('jwt', { session: false }), makePost);
-postsRouter.get("/", passport.authenticate(['jwt', 'anonymous'], { session: false,  }), getAllPosts);
-postsRouter.get("/my", passport.authenticate('jwt', { session: false }), getPostsForVisitor);
+postsRouter.get("/", passport.authenticate(['jwt', 'anonymous'], { session: false }), getAllPosts);
+postsRouter.get("/my", passport.authenticate(['jwt', 'anonymous'], { session: false }), getPostsForVisitor);
 postsRouter.get("/:id", passport.authenticate(['jwt', 'anonymous'], { session: false }), getPostById);
 postsRouter.put("/:id", passport.authenticate('jwt', { session: false }), updatePostById);
 postsRouter.delete("/:id", passport.authenticate('jwt', { session: false }), removePostById);
+postsRouter.post("/:id/change-status", passport.authenticate('jwt', { session: false }), changePublishedStatus);
 
 postsRouter.post("/:postId/comments", passport.authenticate('jwt', { session: false }), makeComment);
 postsRouter.get("/:postId/comments", passport.authenticate(['jwt', 'anonymous'], { session: false }), getAllCommentsOfPost);

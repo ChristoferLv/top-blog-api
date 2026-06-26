@@ -7,12 +7,14 @@ async function logOut() {
 }
 
 async function getPosts() {
+    const token = localStorage.getItem("token");
     try {
         const response = await fetch(BASE_URL + '/posts', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': token
             }
         });
         const data = await response.json();

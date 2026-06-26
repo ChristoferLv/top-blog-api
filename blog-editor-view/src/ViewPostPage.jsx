@@ -111,6 +111,7 @@ function ViewPost() {
             <div className="editor-container">
                 <button className="edit-button" onClick={goToEdit}>Edit</button>
                 <div className="post-info">
+                    <p className={post.published ? "published" : "not-published"}>Status: {post.published ? "Published" : "Not Published"}</p>
                     <p className="post-author">By: <strong>{post.owner.username}</strong></p>
                     <p className="published-at">Posted on: <strong>{new Date(post.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(post.posted_at).toLocaleTimeString()}</strong></p>
                 </div>

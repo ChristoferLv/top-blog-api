@@ -1,6 +1,6 @@
 import { use, useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { deleteComment, deletePost, getCommentsOfPost, getPostById, updatePost } from "./api/requests";
+import { changePostStatus, deleteComment, deletePost, getCommentsOfPost, getPostById, updatePost } from "./api/requests";
 import { useNavigate, useParams } from "react-router";
 import ConfirmationDialog from "./components/ConfirmationDialog";
 
@@ -96,6 +96,14 @@ function EditPost() {
         }
     }
 
+    async function handlePublishUnpublish() {
+        const newStatus = !postData.published;
+        const result = await changePostStatus(postId, newStatus);
+        if (result && result.success) {
+            setPostData({ ...postData, published: newStatus });
+        }
+    }
+
     if (!postData) return (<><div className="editor-container"><p>Loading...</p></div></>);
 
 
@@ -104,16 +112,18 @@ function EditPost() {
             <div className="editor-container">
                 <div className="actions">
                     <button onClick={() => { navigate("/view/" + postId) }} className="edit-button">View</button>
+                    <button className="toggle-publish-button" onClick={handlePublishUnpublish}>{postData.published ? "Unpublish" : "Publish"}</button>
                     <button className="delete-button" onClick={handleDeleteClick}>Delete</button>
                     <button className="save-button" type="submit" form="post-form">Save</button>
                 </div>
                 <div className="post-info">
+                    <p className={postData.published ? "published" : "not-published"}>Status: {postData.published ? "Published" : "Not Published"}</p>
                     <p className="post-author">By: <strong>{postData.owner.username}</strong></p>
                     <p className="published-at">Posted on: <strong>{new Date(postData.posted_at).toLocaleDateString()}</strong> at <strong>{new Date(postData.posted_at).toLocaleTimeString()}</strong></p>
                 </div>
                 {!isTitleValid && <p className="comment-invalid">● Title length must be between 1 and 100 characters!</p>}
                 {!isContentValid && <p className="comment-invalid">● Content length must be between 1 and 10000 characters!</p>}                <form id="post-form" onSubmit={handleSubmit} className="post-form">
-                     <textarea className="post-title" onChange={handlePostData} name="title" value={postData.title || ""} ></textarea>
+                    <textarea className="post-title" onChange={handlePostData} name="title" value={postData.title || ""} ></textarea>
                     <textarea name="content" onChange={handlePostData} value={postData.content || ""}></textarea>
                 </form>
                 <hr className="posts-separator" />

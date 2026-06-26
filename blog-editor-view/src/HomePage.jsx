@@ -23,6 +23,7 @@ function Home() {
                 {postsList.map((post) => {
                     return (<div key={post.id} className="post">
                         <Link to={`/view/${post.id}`}>
+                            <p className={post.published? "published":"not-published"}>Status: {post.published ? "Published" : "Not Published"}</p>
                             <p className="post-title multi-line-truncate">{post.title}</p>
                             <p className="summary multi-line-truncate">{post.content}</p>
                             <p className="post-author">By: <strong>{post.owner.username}</strong></p>
