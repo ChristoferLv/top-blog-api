@@ -1,6 +1,6 @@
 import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { getMyPosts } from "./api/requests";
+import { getPosts } from "./api/requests";
 import { Link, useNavigate } from "react-router";
 
 function Home() {
@@ -9,12 +9,11 @@ function Home() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function getPosts() {
-            const posts = await getMyPosts(user.token);
+        async function loadPosts() {
+            const posts = await getPosts();
             setPostsList(posts.data);
         }
-        if (user)
-            getPosts();
+        loadPosts();
         return () => setPostsList([]);
     }, [user]);
 

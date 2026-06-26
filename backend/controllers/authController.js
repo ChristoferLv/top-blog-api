@@ -16,7 +16,10 @@ const validateNewUser = [
                 throw new Error('Username already in use');
             return true;
         }).withMessage("Username is already in use"),
-    body("password").trim().isLength({ min: 3 }).withMessage("Password must have at leats 3 characteres").isLength({ max: 50 }).withMessage("The maximum password length is 50"),
+    body("password")
+        .trim()
+        .isLength({ min: 3 }).withMessage("Password must have at leats 3 characteres")
+        .isLength({ max: 50 }).withMessage("The maximum password length is 50"),
     body('confirmPassword').custom((value, { req }) => {
         return value === req.body.password;
     }).withMessage("Password fields must match"),
@@ -63,10 +66,13 @@ const register = [
     validateNewUser,
     async (req, res) => {
         const errors = validationResult(req);
+        if (errors.array().length == 1 && errors.array()[0].msg == 'Username is already in use')
+            return res.status(409).json({ success: false, error: errors });
 
         if (!errors.isEmpty()) {
             return res.status(400).json({ success: false, error: errors });
         }
+
 
         const { username, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);

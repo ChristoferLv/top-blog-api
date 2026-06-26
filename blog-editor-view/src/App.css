@@ -65,6 +65,10 @@ input {
     font-size: 16px;
 }
 
+.auth-form input {
+    margin-bottom: 2px;
+}
+
 .wrap {
     display: flex;
     justify-content: center;
@@ -235,6 +239,10 @@ h1 {
     gap: 0 10px;
 }
 
+.comment-actions{
+    margin-top: 3px;
+}
+
 .comment-input {
     margin-bottom: 2px;
 }
@@ -308,6 +316,7 @@ h1 {
 .comment-invalid {
     color: red;
     margin: 1px;
+    text-align: left;
 }
 
 .text-overflow {

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 function LoginPage() {
     const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -86,9 +86,9 @@ function LoginPage() {
                     </button>
                 </div>
                 <p>Not registered? &nbsp;
-                    <a href="/auth/sign-up" className="link-plain">
+                    <Link to={"/register"} className="link-plain">
                         Create an account
-                    </a>
+                    </Link>
                 </p>
             </form >
         </div >

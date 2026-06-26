@@ -24,8 +24,7 @@ export function AuthProvider({ children }) {
           setUser(user)
         });
       } else {
-        if (window.location.pathname != "/login")
-          window.location.pathname = "/login";
+        setUser(null)
       }
     }
   }, []);

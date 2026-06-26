@@ -1,6 +1,6 @@
 import { use, useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { deleteComment, deletePost, getCommentsOfPost, getMyPosts, getPostById, makePost, updatePost } from "./api/requests";
+import { deleteComment, deletePost, getCommentsOfPost, getPostById, updatePost } from "./api/requests";
 import { useNavigate, useParams } from "react-router";
 import ConfirmationDialog from "./components/ConfirmationDialog";
 

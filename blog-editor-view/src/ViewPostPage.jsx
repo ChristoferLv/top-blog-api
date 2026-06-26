@@ -126,7 +126,7 @@ function ViewPost() {
                             <label htmlFor="comment">Make your comment</label>
                             <input className="comment-input" id="comment" type="text" placeholder={"What you have to say?"} onChange={handleCommentChange} value={myComment} />
                             {!isCommentValid && <p className="comment-invalid">Comment length must be between 2 and 500 characters!</p>}
-                            <div>
+                            <div className="comment-actions">
                                 <button className="send-comment" onClick={sendComment}>Send</button>
                             </div>
                         </form>
@@ -150,7 +150,7 @@ function ViewPost() {
                                             <p className="post-author"><strong>{comment.username}</strong></p>
                                             <p className="published-at">{new Date(comment.posted_at).toLocaleDateString()} - {new Date(comment.posted_at).toLocaleTimeString()}</p>
                                             <p className="comment-content text-overflow">{comment.content}</p>
-                                            {user && ((comment.ownerId == user.data.id) ?
+                                            {user && ((comment.ownerId == user.id) ?
                                                 (<div className="comment-actions">
                                                     <button className="edit-button" onClick={() => startEditing(comment.id, comment.content)}>Edit</button>
                                                     <button className="delete-button" onClick={() => handleDeleteComment(comment.id)}>Delete</button>

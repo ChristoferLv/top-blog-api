@@ -8,6 +8,7 @@ import Home from './HomePage.jsx'
 import CreatePost from './CreatePostPage.jsx'
 import ViewPost from './ViewPostPage.jsx'
 import EditPost from './EditPostPage.jsx'
+import RegisterPage from './RegisterPage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/login", element: <LoginPage /> },
+      { path: "/register", element: <RegisterPage /> },
       { path: "/", element: <Home /> },
       { path: "/new-post", element: <CreatePost /> },
       { path: "/view/:postId", element: <ViewPost /> },

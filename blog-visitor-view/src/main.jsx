@@ -6,6 +6,7 @@ import LoginPage from './login.jsx'
 import { AuthProvider } from './AuthProvider.jsx'
 import Home from './HomePage.jsx'
 import ViewPost from './ViewPostPage.jsx'
+import RegisterPage from './RegisterPage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -13,9 +14,9 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/login", element: <LoginPage /> },
+      { path: "/register", element: <RegisterPage /> },
       { path: "/", element: <Home /> },
       { path: "/view/:postId", element: <ViewPost /> },
-
       { path: "*", element: <Navigate to="/" replace /> } 
     ]
   },

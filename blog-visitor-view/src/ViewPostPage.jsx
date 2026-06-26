@@ -121,7 +121,7 @@ function ViewPost() {
                             <label htmlFor="comment">Make your comment</label>
                             <input className="comment-input" id="comment" type="text" placeholder={"What you have to say?"} onChange={handleCommentChange} value={myComment} />
                             {!isCommentValid && <p className="comment-invalid">Comment length must be between 2 and 500 characters!</p>}
-                            <div>
+                            <div className="comment-actions">
                                 <button className="send-comment" onClick={sendComment}>Send</button>
                             </div>
                         </form>

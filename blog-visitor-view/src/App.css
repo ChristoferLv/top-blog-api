@@ -235,6 +235,10 @@ h1 {
     gap: 0 10px;
 }
 
+.comment-actions{
+    margin-top: 3px;
+}
+
 .comment-input {
     margin-bottom: 2px;
 }

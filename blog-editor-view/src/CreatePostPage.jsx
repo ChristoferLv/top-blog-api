@@ -1,6 +1,6 @@
 import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { getMyPosts, makePost } from "./api/requests";
+import { makePost } from "./api/requests";
 import { useNavigate } from "react-router";
 
 function CreatePost() {

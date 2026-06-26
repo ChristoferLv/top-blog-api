@@ -13,18 +13,19 @@ function App() {
     <>
       <header>
         <Link to={"/"}><p>The Gutenberg Blog</p></Link>
-        {user != null ? (
-          <div className="header-actions">
-            <button onClick={() => logOut()} className="header-action-item">
-              Log Out
-            </button>
-          </div>)
-          : (<div className="header-actions">
-            <button onClick={() => navigate("/login")} className="header-action-item">
-              Log In
-            </button>
-          </div>)
-        }
+        {!user && <div className="header-actions">
+          <button onClick={() => navigate("/login")} className="header-action-item">
+            Login
+          </button>
+          <button onClick={() => navigate("/register")} className="header-action-item">
+            Sign Up
+          </button>
+        </div>}
+        {user && <div className="header-actions">
+          <button onClick={() => logOut()} className="header-action-item">
+            Log Out
+          </button>
+        </div>}
       </header>
       <Outlet />
     </>

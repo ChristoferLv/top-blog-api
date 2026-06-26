@@ -6,15 +6,13 @@ async function logOut() {
     window.location.pathname = "/login";
 }
 
-async function getMyPosts() {
+async function getPosts() {
     try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(BASE_URL + '/posts/my', {
+        const response = await fetch(BASE_URL + '/posts', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': token
             }
         });
         const data = await response.json();
@@ -176,7 +174,7 @@ async function editComment(commentId, commentData) {
 
 
 export {
-    getMyPosts,
+    getPosts,
     makePost,
     getPostById,
     updatePost,
