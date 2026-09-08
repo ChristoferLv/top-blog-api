@@ -99,6 +99,10 @@ npm run dev
 - React
 - Vite
 
+## Visualization
+
+<img width="1890" height="1145" alt="blog_api_screenshot" src="https://github.com/user-attachments/assets/f84289f2-b58e-40a5-a71e-b1e202234623" />
+
 ---
 
 Project developed following: [The Odin Project - Blog API](https://www.theodinproject.com/lessons/node-path-nodejs-blog-api)
